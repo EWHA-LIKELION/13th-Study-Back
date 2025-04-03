@@ -36,6 +36,7 @@ textarea {
   border: 1px solid #cbcaca;
   font-size: 15px;
   resize: none;
+  margin-bottom: 20px;
 }
 
 button[type="submit"] {
@@ -47,7 +48,7 @@ button[type="submit"] {
   font-size: 15px;
   font-weight: bold;
   display: block;
-  margin: 0 auto;
+  margin: 0 auto -20px auto;
 }
 
 button[type="submit"]:hover {

@@ -14,10 +14,11 @@
 
     <form action="{% url 'update2' community_update.id %}" method="post">
       {% csrf_token %}
-      <p>제목: <input type="text" name="title" value="{{community_update.title}}" /></p>
-      본문 :
+      <p>Title: <input type="text" name="title" value="{{community_update.title}}" />
+      Content :
       <textarea name="content" cols="30" rows="10">{{community_update.content}}</textarea>
       <button type="submit">수정하기</button>
+      </p>
     </form>
   </body>
 </html>
