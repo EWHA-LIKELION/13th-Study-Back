@@ -1,0 +1,55 @@
+{% extends "../base.html" %}
+
+{% load static %}
+
+{% block title %}
+<title>질문하기</title>
+{% endblock title %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'styles/status.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/detail.css' %}" />
+{% endblock style %}
+
+{% block banner %}
+{% endblock banner %}
+
+{% block main %}
+<main>
+  <form
+	{% block url %}
+    action=	"{% url 'post_question_create' %}"
+	{% endblock %}
+    method="post"
+    enctype="multipart/form-data"
+  >
+    {% csrf_token %}
+    <input
+	  type="text"
+	  name="title"
+	  maxlength="50"
+	  {% block title_defaultvalue %}{% endblock %}
+	/>
+    <textarea
+	  name="content"
+	  required
+	  {% block content_defaultvalue %}{% endblock %}
+	></textarea>
+    <input
+	  type="text"
+	  name="name"
+	  maxlength="10"
+	  {% block name_defaultvalue %}{% endblock %}
+	/>
+    <input
+	  type="checkbox"
+	  name="status"
+	  {% block status_defaultvalue %}{% endblock %}
+	/>
+    <button type="submit">질문하기</button>
+  </form>
+</main>
+{% endblock main %}
+
+{% block aside %}
+{% endblock aside %}
