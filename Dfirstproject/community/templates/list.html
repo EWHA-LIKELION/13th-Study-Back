@@ -6,25 +6,18 @@
 
 <body>
   <div class="title">
-    <h1> 🦁아기사자 대나무숲🌴 </h1>
-  </div>
-
-  <div class="post">
-    <h2> ✍️ Post ✍️ </h2>
-    <ul>
-      {% for post in posts %}
-        <li><a href="{% url 'detail' pk=post.id %}">{{post.title}}</a>
-          <span>{{post.upload_time}}</span></li>
-      {% endfor %}
-    </ul>
+    <h1> 🦁 아기사자 대나무숲 🌴 </h1>
   </div>
 
   <div class="question">
     <h2> ❓ Q&A ❓ </h2>
+    <a href="{% url 'new' %}" class="new-btn">✍️ 새로운 글 작성하기 ✍️</a>
     <ul>
-      {% for question in questions %}
-        <li><a href="{% url 'question_detail' pk=question.id %}">{{question.title}}</a>
+      {% for question in questions.all %}
+        <li><a href="{% url 'question_detail' pk=question.id %}">{{question.title}}</a> 
+          <!-- more대신 게시글 제목 누르기 -->
           <span>{{question.upload_time}}</span></li>
+          <div class="summary">{{question.summary}}</div>
       {% endfor %}
     </ul>
   </div>

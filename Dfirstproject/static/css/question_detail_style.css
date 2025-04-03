@@ -32,7 +32,11 @@ span {
   border-radius: 10px;
 }
 
-.back {
+/* 기존 back에서 delete, update 추가 */
+  
+.back,
+.delete,
+.update {
   background-color: white;
   display: inline-block;
   margin-top: 20px;
@@ -43,7 +47,9 @@ span {
   padding: 5px 10px;
 }
 
-.back:hover {
+.back:hover,
+.delete:hover,
+.update:hover {
   color: #005fa3;
   text-decoration: underline;
 }
