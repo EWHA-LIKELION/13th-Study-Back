@@ -8,8 +8,8 @@ def list(request):
     posts = Community.objects.filter(upload_time__lte = timezone.now()).order_by('upload_time')
     return render(request, 'pages/list.html', {'posts':posts})
 
-def detail(request, pk):
-    post = get_object_or_404(Community, pk=pk)
+def detail(request, id):
+    post = get_object_or_404(Community, pk=id)
     return render(request, 'pages/detail.html', {'post':post})
 
 def question_list(request):
@@ -26,7 +26,7 @@ def question_list(request):
         questions = Question.objects.only('title', 'upload_time', 'name', 'status').order_by('-upload_time')
     return render(request, 'pages/question_list.html', {'questions':questions})
 
-def question_detail(request, pk):
-    question = get_object_or_404(Question, pk=pk)
+def question_detail(request, id):
+    question = get_object_or_404(Question, pk=id)
     help_questions = Question.objects.filter(status = False).only('status').order_by('-upload_time')
     return render(request, 'pages/question_detail.html', {'question':question, 'help_questions':help_questions})
