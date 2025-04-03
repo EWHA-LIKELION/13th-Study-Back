@@ -1,7 +1,8 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from community.models import Post 
-from community.models import Question
+from community.models import Post, Question
+from .forms import Questionform
+
 
 # Create your views here.
 
@@ -21,4 +22,33 @@ def question_list(request):
 def question_detail(request, pk):
     questions = get_object_or_404(Question, pk=pk) # 게시글을 업로드 할 때마다 매기는 번호
     return render(request, 'question_detail.html', {'questions':questions}) # 화면에 보이게 렌더링
+
+def new(request): # new.html 렌더링
+    form=Questionform()
+    return render(request, 'new.html', {'form':form}) 
+
+def create(request):
+    form = Questionform(request.POST, request.FILES)
+    if form.is_valid():
+        new_question=form.save(commit=False) # 폼 내용 일시 저장
+        new_question.upload_time = timezone.now()
+        new_question.save()
+        return redirect('question_detail', new_question.id)
+
+def delete(request, question_id):
+    question_delete=get_object_or_404(Question, pk=question_id)
+    question_delete.delete()
+    return redirect('main')
+
+def update_page(request, question_id):
+    question_update=get_object_or_404(Question,pk=question_id)
+    return render(request, 'update.html', {'question_update':question_update})
+
+def update(request, question_id):
+    question_update=get_object_or_404(Question, pk=question_id)
+    question_update.title=request.POST['title']
+    question_update.body=request.POST['content']
+    question_update.save()
+    return redirect('main')
+
 
