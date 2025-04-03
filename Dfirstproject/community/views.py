@@ -1,6 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Community, Question
+from .forms import QuestionForm
 
 # Create your views here.
 
@@ -30,3 +31,35 @@ def get_question_detail(request, id):
     question = get_object_or_404(Question, pk=id)
     help_questions = Question.objects.filter(status = False).only('status').order_by('-upload_time')
     return render(request, 'pages/question_detail.html', {'question':question, 'help_questions':help_questions})
+
+def get_question_create(request):
+    form = QuestionForm()
+    return render(request, 'pages/question_create.html', {'form':form})
+    
+def post_question_create(request):
+    form = QuestionForm(request.POST, request.FILES)
+    if form.is_valid():
+        created_question = form.save(commit=False)
+        created_question.upload_time = timezone.now()
+        created_question.save()
+        return redirect('get_question_detail', created_question.id)
+    return redirect('get_question_list')
+
+def get_question_update(request, id):
+    form = QuestionForm()
+    question = get_object_or_404(Question, pk=id)
+    return render(request, 'pages/question_update.html', {'form':form, 'question':question})
+
+def post_question_update(request, id):
+    prev_question = get_object_or_404(Question, pk=id)
+    form = QuestionForm(request.POST, request.FILES, instance=prev_question)
+    if form.is_valid():
+        updated_question = form.save(commit=False)
+        updated_question.save()
+        return redirect('get_question_detail', updated_question.id)
+    return redirect('get_question_list')
+
+def delete_question(requset, id):
+    question = get_object_or_404(Question, pk=id)
+    question.delete()
+    return redirect('get_question_list')
