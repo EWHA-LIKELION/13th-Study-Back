@@ -1,16 +1,26 @@
 <body>
     <div>
+        {% if post %}
         <h1>{{ post.title }}</h1>
         <br>
         <span>{{post.upload_time }}</span>
         <div class="content">{{ post.content }}</div>
+
+        <a href="{% url 'delete' post.id %}">삭제하기</a>
+        <a href="{% url 'update_page' post.id %}">수정하기</a>
+        {% endif %}
     </div>
     
     <div>
+        {% if question %}
         <h1>{{ question.title }}</h1>
         <br>
         <span>{{question.upload_time }}</span>
         <div class="content">{{ question.content }}</div>
-    </div>
+
+        <a href="{% url 'delete_question' question.id %}">삭제하기</a>
+        <a href="{% url 'update_q_page' question.id %}">수정하기</a>
+        {% endif %}
+
     </div>
 </body>
