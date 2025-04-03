@@ -22,6 +22,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', list, name="main"),
     path('<int:id>', detail, name="detail"),
-    path('qna', question_list, name="question_list"),
-    path('qna/<int:id>', question_detail, name="question_detail")
+    path('qna', get_question_list, name="get_question_list"),
+    path('qna/<int:id>', get_question_detail, name="get_question_detail"),
 ]

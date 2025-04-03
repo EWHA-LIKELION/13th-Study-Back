@@ -37,7 +37,7 @@
   <ol>
     {% for help_question in help_questions %}
     <li>
-      <a href="{% url 'question_detail' id=help_question.id %}">
+      <a href="{% url 'get_question_detail' id=help_question.id %}">
         <p>{{help_question.title}}</p>
       </a>
     </li>

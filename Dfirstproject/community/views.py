@@ -12,7 +12,7 @@ def detail(request, id):
     post = get_object_or_404(Community, pk=id)
     return render(request, 'pages/detail.html', {'post':post})
 
-def question_list(request):
+def get_question_list(request):
     query_string_상태 = request.GET.get('상태')
     if query_string_상태 == '도와주세요':
         상태 = False
@@ -26,7 +26,7 @@ def question_list(request):
         questions = Question.objects.only('title', 'upload_time', 'name', 'status').order_by('-upload_time')
     return render(request, 'pages/question_list.html', {'questions':questions})
 
-def question_detail(request, id):
+def get_question_detail(request, id):
     question = get_object_or_404(Question, pk=id)
     help_questions = Question.objects.filter(status = False).only('status').order_by('-upload_time')
     return render(request, 'pages/question_detail.html', {'question':question, 'help_questions':help_questions})

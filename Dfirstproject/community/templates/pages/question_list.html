@@ -31,7 +31,7 @@
     </thead>
     <tbody>
 	  {% for question in questions %}
-      <tr onclick="location.href=`{% url 'question_detail' id=question.id %}`;">
+      <tr onclick="location.href=`{% url 'get_question_detail' id=question.id %}`;">
         {% if not question.status %}
         <td><p class="status fill-help">도와주세요</p></td>
         {% else %}
