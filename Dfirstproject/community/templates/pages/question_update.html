@@ -1,0 +1,31 @@
+{% extends "./question_create.html" %}
+
+{% load static %}
+
+{% block title %}
+<title>{{question.title}}</title>
+{% endblock title %}
+
+{% block url %}
+action="{% url 'post_question_update' id=question.id %}"
+{% endblock url %}
+
+<!-- placeholder를 value로 바꾸세요! -->
+
+{% block title_defaultvalue %}
+placeholder="{{question.title}}"
+{% endblock title_defaultvalue %}
+
+{% block content_defaultvalue %}
+placeholder="{{question.content}}"
+{% endblock content_defaultvalue %}
+
+{% block name_defaultvalue %}
+placeholder="{{question.name}}"
+{% endblock name_defaultvalue %}
+
+{% block status_defaultvalue %}
+{% if question.status %}
+checked
+{% endif %}
+{% endblock status_defaultvalue %}
