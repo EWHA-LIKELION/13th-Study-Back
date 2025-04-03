@@ -43,5 +43,14 @@
     </li>
     {% endfor %}
   </ol>
+  <button
+    type="button"
+    onclick="location.href=`{% url 'get_question_update' id=question.id %}`"
+  >
+    수정하기
+  </button>
+  <button type="button" onclick="location.href=`{% url 'delete_question' id=question.id %}`">
+    삭제하기
+  </button>
 </aside>
 {% endblock aside %}
