@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from community.models import Community,Question
+from .models import Community, Question
 
 # Create your views here.
 
