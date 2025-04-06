@@ -38,7 +38,10 @@
       required
       {% block content_attribute %}
 	  {% endblock content_attribute %}
-    ></textarea>
+    >
+	{% block content_defaultValue %}
+	{% endblock content_defaultValue %}
+	</textarea>
     <input
       type="text"
       name="name"

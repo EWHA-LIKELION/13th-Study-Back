@@ -10,18 +10,21 @@
 action="{% url 'post_question_update' id=question.id %}"
 {% endblock url %}
 
-<!-- placeholder를 value로 바꾸세요! -->
-
 {% block title_attribute %}
-placeholder="{{question.title}}"
+value="{{question.title}}"
 {% endblock title_attribute %}
 
 {% block content_attribute %}
-placeholder="{{question.content}}"
 {% endblock content_attribute %}
 
+{% block content_defaultValue %}
+{{question.content}}
+{% endblock content_defaultValue %}
+
 {% block name_attribute %}
-placeholder="{{question.name}}"
+{% if question.name %}
+value="{{question.name}}"
+{% endif %}
 {% endblock name_attribute %}
 
 {% block status_attribute %}
