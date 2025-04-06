@@ -28,4 +28,9 @@ main {
 }
 aside > ol {
   width: 13.1875rem;
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }
