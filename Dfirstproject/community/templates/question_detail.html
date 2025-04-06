@@ -17,9 +17,9 @@
 {% block main %}
 <main>
   {% if not question.status %}
-  <p class="status fill-help">도와주세요</p>
+  <p class="status help">도와주세요</p>
   {% else %}
-  <p class="status fill-done">해결됐어요</p>
+  <p class="status done">해결됐어요</p>
   {% endif %}
   <h2>{{question.title}}</h2>
   <div id="info">

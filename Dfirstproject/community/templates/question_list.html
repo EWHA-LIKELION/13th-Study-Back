@@ -30,12 +30,12 @@
       </tr>
     </thead>
     <tbody>
-	  {% for question in questions %}
+      {% for question in questions %}
       <tr onclick="location.href=`{% url 'get_question_detail' id=question.id %}`;">
         {% if not question.status %}
-        <td><p class="status fill-help">도와주세요</p></td>
+        <td><p class="status help">도와주세요</p></td>
         {% else %}
-        <td><p class="status fill-done">해결됐어요</p></td>
+        <td><p class="status done">해결됐어요</p></td>
         {% endif %}
         <td><p>{{question.title}}</p></td>
         <td><p>{{question.name|default:"익명"}}</p></td>
@@ -53,7 +53,7 @@
   <ol>
     <li>
       <button
-        class="status stroke-help"
+        class="status help"
         type="button"
         onclick="location.href=`/qna?상태=도와주세요`"
       >
@@ -62,7 +62,7 @@
     </li>
     <li>
       <button
-        class="status stroke-done"
+        class="status done"
         type="button"
         onclick="location.href=`/qna?상태=해결됐어요`"
       >
