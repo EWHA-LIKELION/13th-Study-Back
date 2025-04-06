@@ -17,36 +17,41 @@
 {% block main %}
 <main>
   <form
-	{% block url %}
-    action=	"{% url 'post_question_create' %}"
-	{% endblock %}
+    id="question_form"
+    {% block url %}
+    action="{% url 'post_question_create' %}"
+    {% endblock url %}
     method="post"
     enctype="multipart/form-data"
   >
     {% csrf_token %}
     <input
-	  type="text"
-	  name="title"
-	  maxlength="50"
-	  {% block title_defaultvalue %}{% endblock %}
-	/>
+      type="text"
+      name="title"
+      maxlength="50"
+      {% block title_attribute %}
+	  {% endblock title_attribute %}
+    />
     <textarea
-	  name="content"
-	  required
-	  {% block content_defaultvalue %}{% endblock %}
-	></textarea>
+      name="content"
+      required
+      {% block content_attribute %}
+	  {% endblock content_attribute %}
+    ></textarea>
     <input
-	  type="text"
-	  name="name"
-	  maxlength="10"
-	  {% block name_defaultvalue %}{% endblock %}
-	/>
+      type="text"
+      name="name"
+      maxlength="10"
+      {% block name_attribute %}
+	  {% endblock name_attribute %}
+    />
     <input
-	  type="checkbox"
-	  name="status"
-	  {% block status_defaultvalue %}{% endblock %}
-	/>
-    <button type="submit">질문하기</button>
+      type="checkbox"
+      name="status"
+      {% block status_attribute %}
+	  {% endblock status_attribute %}
+    />
+	<button type="submit">질문하기</button>
   </form>
 </main>
 {% endblock main %}

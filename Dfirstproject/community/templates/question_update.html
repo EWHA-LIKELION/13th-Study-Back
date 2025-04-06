@@ -12,20 +12,20 @@ action="{% url 'post_question_update' id=question.id %}"
 
 <!-- placeholder를 value로 바꾸세요! -->
 
-{% block title_defaultvalue %}
+{% block title_attribute %}
 placeholder="{{question.title}}"
-{% endblock title_defaultvalue %}
+{% endblock title_attribute %}
 
-{% block content_defaultvalue %}
+{% block content_attribute %}
 placeholder="{{question.content}}"
-{% endblock content_defaultvalue %}
+{% endblock content_attribute %}
 
-{% block name_defaultvalue %}
+{% block name_attribute %}
 placeholder="{{question.name}}"
-{% endblock name_defaultvalue %}
+{% endblock name_attribute %}
 
-{% block status_defaultvalue %}
+{% block status_attribute %}
 {% if question.status %}
 checked
 {% endif %}
-{% endblock status_defaultvalue %}
+{% endblock status_attribute %}
