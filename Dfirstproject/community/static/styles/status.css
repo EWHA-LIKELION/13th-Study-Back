@@ -3,30 +3,11 @@
   height: fit-content;
   padding: var(--space-6) var(--space-12);
   border-radius: 1rem;
+  background-color: var(--light-grey);
 }
-.fill-help {
-  background-color: var(--ewha-coral);
-  color: white;
-}
-.fill-done {
-  background-color: var(--ewha-green);
-  color: white;
-}
-.stroke-help {
-  border: 2px solid var(--ewha-coral);
+.help {
   color: var(--ewha-coral);
-
-  &:hover {
-    background-color: var(--ewha-coral);
-    color: white;
-  }
 }
-.stroke-done {
-  border: 2px solid var(--ewha-green);
-  color: var(--ewha-green);
-
-  &:hover {
-    background-color: var(--ewha-green);
-    color: white;
-  }
+.done {
+  color: var(--ewha-blue);
 }
