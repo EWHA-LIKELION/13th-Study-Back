@@ -32,6 +32,13 @@ p {
   font-style: normal;
   line-height: normal;
 }
+button {
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-weight: 600;
+  font-style: normal;
+  line-height: normal;
+}
 
 :root {
   /* Color styles */
@@ -42,6 +49,7 @@ p {
   --ewha-blue: #45a2bc;
   --ewha-mint: #36ae92;
   --ewha-coral: #f27367;
+  --light-grey: #eeeeee;
 
   /* Space styles */
   --space-6: 0.375rem;
