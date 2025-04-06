@@ -1,4 +1,4 @@
-{% extends "../base.html" %}
+{% extends "./base.html" %}
 
 {% load static %}
 
@@ -7,8 +7,8 @@
 {% endblock title %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'styles/status.css' %}" />
-<link rel="stylesheet" href="{% static 'styles/list.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/components/status.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/pages/list.css' %}" />
 {% endblock style %}
 
 {% block banner %}
