@@ -7,6 +7,7 @@
 {% endblock title %}
 
 {% block style %}
+<link rel="stylesheet" href="{% static 'styles/components/primary_button.css' %}" />
 <link rel="stylesheet" href="{% static 'styles/components/status.css' %}" />
 <link rel="stylesheet" href="{% static 'styles/pages/detail.css' %}" />
 {% endblock style %}
@@ -33,24 +34,69 @@
 
 {% block aside %}
 <aside>
-  <h3>이 질문도 도와주세요!</h3>
-  <ol>
-    {% for help_question in help_questions %}
-    <li>
-      <a href="{% url 'get_question_detail' id=help_question.id %}">
-        <p>{{help_question.title}}</p>
-      </a>
-    </li>
-    {% endfor %}
-  </ol>
-  <button
-    type="button"
-    onclick="location.href=`{% url 'get_question_update' id=question.id %}`"
-  >
-    수정하기
-  </button>
-  <button type="button" onclick="location.href=`{% url 'delete_question' id=question.id %}`">
-    삭제하기
-  </button>
+  <ul>
+    <button
+      class="primary_button action"
+      type="button"
+      onclick="location.href=`{% url 'get_question_update' id=question.id %}`"
+    >
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 15 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_109_116)">
+          <path
+            fill="#FFFDF1"
+            d="M10.4176 1.02783L9.0942 2.35127L12.6489 5.90596L13.9723 4.58252C14.6559 3.89893 14.6559 2.7915 13.9723 2.10791L12.895 1.02783C12.2114 0.344238 11.104 0.344238 10.4204 1.02783H10.4176ZM8.47623 2.96924L2.1024 9.3458C1.81802 9.63018 1.61021 9.98291 1.49537 10.3685L0.527398 13.6579C0.459039 13.8903 0.52193 14.1392 0.691461 14.3087C0.860992 14.4782 1.10982 14.5411 1.33951 14.4755L4.62896 13.5075C5.01451 13.3927 5.36724 13.1849 5.65162 12.9005L12.0309 6.52393L8.47623 2.96924Z"
+          />
+        </g>
+        <defs>
+          <clipPath id="clip0_109_116">
+            <rect
+              width="14"
+              height="14"
+              fill="white"
+              transform="translate(0.5 0.5)"
+            />
+          </clipPath>
+        </defs>
+      </svg>
+      수정하기
+    </button>
+    <button
+      class="primary_button delete"
+      type="button"
+      onclick="location.href=`{% url 'delete_question' id=question.id %}`"
+    >
+      <svg
+        width="15"
+        height="15"
+        viewBox="0 0 15 15"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          fill="#FFFDF1"
+          d="M13.66 3.02H11.42V1.62C11.42 1.00225 10.9178 0.5 10.3 0.5H4.70003C4.08228 0.5 3.58003 1.00225 3.58003 1.62V3.02H1.34003C1.03028 3.02 0.780029 3.27025 0.780029 3.58V4.14C0.780029 4.217 0.843029 4.28 0.920029 4.28H1.97703L2.40928 13.4325C2.43728 14.0293 2.93078 14.5 3.52753 14.5H11.4725C12.071 14.5 12.5628 14.031 12.5908 13.4325L13.023 4.28H14.08C14.157 4.28 14.22 4.217 14.22 4.14V3.58C14.22 3.27025 13.9698 3.02 13.66 3.02ZM10.16 3.02H4.84003V1.76H10.16V3.02Z"
+        />
+      </svg>
+      삭제하기
+    </button>
+  </ul>
+  <section>
+    <h3>이 질문도 도와주세요!</h3>
+    <ol>
+      {% for help_question in help_questions %}
+      <li>
+        <a href="{% url 'get_question_detail' id=help_question.id %}">
+          <p>{{help_question.title}}</p>
+        </a>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
 </aside>
 {% endblock aside %}

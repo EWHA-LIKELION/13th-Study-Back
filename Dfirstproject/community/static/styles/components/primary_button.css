@@ -1,0 +1,20 @@
+.primary_button {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+
+  width: 100%;
+  padding: 12px 24px;
+
+  border-radius: 12px;
+
+  color: var(--ewha-pear-blossom);
+}
+.action {
+  background-color: var(--ewha-green);
+}
+.delete {
+  background-color: var(--ewha-coral);
+}

@@ -7,6 +7,7 @@
 {% endblock title %}
 
 {% block style %}
+<link rel="stylesheet" href="{% static 'styles/components/primary_button.css' %}" />
 <link rel="stylesheet" href="{% static 'styles/components/status.css' %}" />
 <link rel="stylesheet" href="{% static 'styles/pages/list.css' %}" />
 {% endblock style %}
@@ -49,32 +50,47 @@
 
 {% block aside %}
 <aside>
-  <h3>상태별 보기</h3>
-  <ol>
-    <li>
-      <button
-        class="status help"
-        type="button"
-        onclick="location.href=`/qna?상태=도와주세요`"
-      >
-        <p>도와주세요</p>
-      </button>
-    </li>
-    <li>
-      <button
-        class="status done"
-        type="button"
-        onclick="location.href=`/qna?상태=해결됐어요`"
-      >
-        <p>해결됐어요</p>
-      </button>
-    </li>
-  </ol>
   <button
+    class="primary_button action"
     type="button"
     onclick="location.href=`{% url 'get_question_create' %}`"
   >
+    <svg
+      width="9"
+      height="15"
+      viewBox="0 0 9 15"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fill="#FFFDF1"
+        d="M2 4.5C2 3.39688 2.89688 2.5 4 2.5H5C6.10312 2.5 7 3.39688 7 4.5V4.6125C7 5.29375 6.65313 5.92812 6.08125 6.29375L4.7625 7.14062C4.3753 7.38958 4.0568 7.73177 3.83622 8.13581C3.61564 8.53984 3.50003 8.9928 3.5 9.45312V9.5C3.5 10.0531 3.94687 10.5 4.5 10.5C5.05313 10.5 5.5 10.0531 5.5 9.5V9.45625C5.5 9.2 5.63125 8.9625 5.84375 8.825L7.1625 7.97812C8.30625 7.24062 9 5.975 9 4.6125V4.5C9 2.29063 7.20937 0.5 5 0.5H4C1.79063 0.5 0 2.29063 0 4.5C0 5.05313 0.446875 5.5 1 5.5C1.55313 5.5 2 5.05313 2 4.5ZM4.5 14.5C4.83152 14.5 5.14946 14.3683 5.38388 14.1339C5.6183 13.8995 5.75 13.5815 5.75 13.25C5.75 12.9185 5.6183 12.6005 5.38388 12.3661C5.14946 12.1317 4.83152 12 4.5 12C4.16848 12 3.85054 12.1317 3.61612 12.3661C3.3817 12.6005 3.25 12.9185 3.25 13.25C3.25 13.5815 3.3817 13.8995 3.61612 14.1339C3.85054 14.3683 4.16848 14.5 4.5 14.5Z"
+      />
+    </svg>
     질문하기
   </button>
+  <section>
+    <h3>상태별 보기</h3>
+    <ul>
+      <li>
+        <button
+          class="status help"
+          type="button"
+          onclick="location.href=`/qna?상태=도와주세요`"
+        >
+          <p>도와주세요</p>
+        </button>
+      </li>
+      <li>
+        <button
+          class="status done"
+          type="button"
+          onclick="location.href=`/qna?상태=해결됐어요`"
+        >
+          <p>해결됐어요</p>
+        </button>
+      </li>
+    </ul>
+  </section>
 </aside>
 {% endblock aside %}
