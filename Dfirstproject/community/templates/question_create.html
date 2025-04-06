@@ -30,11 +30,13 @@
       type="text"
       name="title"
       maxlength="50"
+	  placeholder="제목"
       {% block title_attribute %}
 	  {% endblock title_attribute %}
     />
     <textarea
       name="content"
+	  placeholder="내용"
       required
       {% block content_attribute %}
 	  {% endblock content_attribute %}
@@ -46,6 +48,7 @@
       type="text"
       name="name"
       maxlength="10"
+	  placeholder="이름"
       {% block name_attribute %}
 	  {% endblock name_attribute %}
     />
