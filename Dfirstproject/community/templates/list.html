@@ -32,9 +32,6 @@
         <ul>
             {% for question in questions %}
             <li><a href="{% url 'question_detail' pk=question.id %}">{{ question.title }}</a>
-                <a href="{% url 'delete' question.id %}">
-                    <button>삭제</button>
-                </a>
                 <span>{{question.upload_time}}</span></li>
 
             {% endfor %}

@@ -45,10 +45,13 @@ def update_page(request, question_id):
     return render(request, 'update.html', {'question_update':question_update})
 
 def update(request, question_id):
-    question_update=get_object_or_404(Question, pk=question_id)
-    question_update.title=request.POST['title']
-    question_update.body=request.POST['content']
-    question_update.save()
-    return redirect('main')
+    if request.method == 'POST':
+        question_update = get_object_or_404(Question, pk=question_id)
+        question_update.title = request.POST['title']
+        question_update.content = request.POST['content']
+        question_update.save()
+        return redirect('main')
+    else:
+        return redirect('update_page', question_id=question_id)
 
 
