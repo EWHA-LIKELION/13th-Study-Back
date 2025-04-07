@@ -9,7 +9,7 @@
 {% block style %}
 <link rel="stylesheet" href="{% static 'styles/components/primary_button.css' %}" />
 <link rel="stylesheet" href="{% static 'styles/components/status.css' %}" />
-<link rel="stylesheet" href="{% static 'styles/pages/detail.css' %}" />
+<link rel="stylesheet" href="{% static 'styles/pages/create.css' %}" />
 {% endblock style %}
 
 {% block banner %}
@@ -26,38 +26,47 @@
     enctype="multipart/form-data"
   >
     {% csrf_token %}
-    <input
-      type="text"
-      name="title"
-      maxlength="50"
-	  placeholder="제목"
-      {% block title_attribute %}
-	  {% endblock title_attribute %}
-    />
-    <textarea
-      name="content"
-	  placeholder="내용"
-      required
-      {% block content_attribute %}
-	  {% endblock content_attribute %}
-    >
-	{% block content_defaultValue %}
-	{% endblock content_defaultValue %}
-	</textarea>
-    <input
-      type="text"
-      name="name"
-      maxlength="10"
-	  placeholder="이름"
-      {% block name_attribute %}
-	  {% endblock name_attribute %}
-    />
-    <input
-      type="checkbox"
-      name="status"
-      {% block status_attribute %}
-	  {% endblock status_attribute %}
-    />
+    <fieldset id="radio-group">
+	  <label>
+        <input type="radio" name="status" value="" />
+		<p class="status help">도와주세요</p>
+	  </label>
+	  <label>
+        <input type="radio" name="status" value="done" />
+		<p class="status done">해결됐어요</p>
+	  </label>
+    </fieldset>
+    <fieldset>
+      <input
+        type="text"
+        name="title"
+        maxlength="50"
+        placeholder="제목"
+        {% block title_attribute %}
+        {% endblock title_attribute %}
+      />
+    </fieldset>
+    <fieldset>
+      <input
+        type="text"
+        name="name"
+        maxlength="10"
+        placeholder="이름"
+        {% block name_attribute %}
+        {% endblock name_attribute %}
+      />
+    </fieldset>
+    <hr />
+    <fieldset>
+      <textarea
+        name="content"
+        placeholder="내용"
+        rows="10"
+        required
+        {% block content_attribute %}
+        {% endblock content_attribute %}
+      >{% block content_defaultValue %}{% endblock content_defaultValue %}</textarea>
+    </fieldset>
   </form>
 </main>
 {% endblock main %}
