@@ -94,6 +94,9 @@ header {
       flex-flow: column nowrap;
       gap: var(--space-12);
     }
+    button {
+      width: 100%;
+    }
     & > section {
       display: flex;
       flex-flow: column nowrap;
