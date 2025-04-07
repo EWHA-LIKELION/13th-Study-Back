@@ -1,0 +1,20 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'community/css/detail.css' %}">
+<!DOCTYPE html>
+<body>
+    <div>
+        <div class="detail-container">
+            <h1>{{ post.title }}</h1>
+            <br>
+            <span>{{post.upload_time }}</span>
+            <div class="content">{{ post.content }}</div>
+            <br>
+            <div class="detail-actions">
+                <a href="{%url 'main' %}">홈으로 돌아가기</a>
+                <a href="{%url 'post_delete' post.id %}">삭제하기</a>
+                <a href="{%url 'post_update_page' post.id %}">수정하기</a>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
