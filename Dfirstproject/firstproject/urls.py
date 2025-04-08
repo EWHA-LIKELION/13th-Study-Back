@@ -16,12 +16,24 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from community.views import List, detail_post, detail_question
+from community.views import List, detail_post, detail_question, new, create, delete, update_page, update, new_question, create_question, delete_question, update_q_page, update_q
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', List, name="main"),
-    path('post/<int:pk>/', detail_post, name="detail_post"),
+    path('', List, name="list"),
+    path('post/<int:post_id>/', detail_post, name="detail_post"),
     #path('', List_question, name="list_question"),
-    path('question/<int:pk>/', detail_question, name="detail_question"),
+    path('question/<int:question_id>/', detail_question, name="detail_question"),
+    
+    path('new/', new, name="new"),
+    path('create/', create, name="create"),
+    path('delete/<int:post_id>/', delete, name='delete'),
+    path('update_page/<int:post_id>/', update_page, name='update_page'),
+    path('update/<int:post_id>/', update, name='update2'),
+
+    path('question/new/', new_question, name="new_question"),
+    path('question/create/', create_question, name="create_question"),
+    path('question/delete/<int:question_id>/', delete_question, name='delete_question'),
+    path('question/update_page/<int:question_id>/', update_q_page, name='update_q_page'),
+    path('question/update/<int:question_id>/', update_q, name='update_q'),
 ]

@@ -1,20 +1,55 @@
+<head>
+    <style>
+        body {
+            padding: 30px;
+        }
+        h1 {
+            text-align: center;
+            border: 2px dashed orange;
+            padding: 10px;
+        }
+        h2 {
+            text-align: center;
+            background-color: rgb(254, 205, 114);
+        }
+        .new {
+            text-align: right;
+        }
+    </style>
+</head>
 <body>
     <div class = "content">
         <h1> 🦁아기사자 대나무숲🦁</h1>
-        <h1> 💚자유게시판💚</h1>
-
+        <h2> ❤️자유게시판❤️</h2>
+    </div>
+    <div class = "new">
+        <a href="{%url 'new' %}">새로운 글 만들기!</a>
+    </div>
+    
+    <div class = "content">
         <ol>
-            {% for post in posts %}
-            <li><a href="{% url 'detail_post' pk=post.id %}">{{post.title}}</a>
-                <span>{{post.upload_time}}</span></li>
+            {% for post in posts.all %}
+            <li><h3>{{post.title}}</h3>
+            {{post.upload_time}}
+            <br />
+            {{post.summary}}
+            <a href = "{%url 'detail_post' post.id%}">...more</a></li>
             {% endfor %}
             </ol>
-
-        <h1> ❓질문게시판❓</h1>
+            
+        <h2> ❓질문게시판❓</h2>
+    </div>
+    <div class = "new">
+        <a href="{%url 'new_question' %}">새로운 질문 만들기!</a>
+    </div>
+    <div class = "content">
         <ol>
-            {% for question in questions %}
-            <li><a href="{% url 'detail_question' pk=question.id %}">{{question.title}}</a>
-                <span>{{question.upload_time}}</span></li>
+            {% for question in questions.all %}
+            <li><h3>{{question.title}}</h3>
+            {{question.upload_time}}
+            <br />
+            {{question.summary}}
+            <a href = "{%url 'detail_question' question.id%}">...more</a></li>
             {% endfor %}
             </ol>
 

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block head %}
+    <title>new</title>
+    {% endblock %}
+</head>
+<body>
+    {% block content %}
+    <h1>Creating New Post</h1>
+
+    <form action="{% url 'create' %}" method="post" enctype="multipart/form-data">
+
+        {% csrf_token %}
+        <p>제목: <input type="text" name="title"></p>
+        본문 : <textarea name="body" cols="30" rows="10"></textarea>
+
+        <button type="submit">제출</button>
+        
+    </form>
+    {% endblock %}
+</body>
+</html>
