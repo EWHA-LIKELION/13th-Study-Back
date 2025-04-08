@@ -10,5 +10,10 @@
         <a href="{% url 'question_list' %}">
             <button>목록으로</button>
         </a>
+        <a href="{% url 'main' %}">
+            <button>홈으로</button>
+        </a>
+        <a href="{% url 'delete' questions.id %}">삭제하기</a>
+        <a href="{% url 'update_page' questions.id %}">수정하기</a>
     </div>
 </body>

@@ -10,6 +10,9 @@
             {% endfor %}
         </ul>
 
+        
+
+
 
         <h2> 질문 </h2>
         
@@ -19,10 +22,18 @@
             </a>
         </div>
 
+        <a href="{%url 'new' %}">
+            <button>글쓰기</button>
+        </a>
+
+        
+
+
         <ul>
             {% for question in questions %}
             <li><a href="{% url 'question_detail' pk=question.id %}">{{ question.title }}</a>
                 <span>{{question.upload_time}}</span></li>
+
             {% endfor %}
         </ul>
 
