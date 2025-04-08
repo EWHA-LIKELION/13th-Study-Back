@@ -13,4 +13,6 @@
   </div>
 
   <a href="{% url 'main' %}" class="back">🔙 back</a>
+  <a href="{% url 'delete' question.id %}" class="delete">✖️ delete</a>
+  <a href="{% url 'update_page' question.id %}" class="update">💱 update</a>
 </body>
