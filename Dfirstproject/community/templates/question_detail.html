@@ -1,9 +1,20 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'community/css/detail.css' %}">
+<!DOCTYPE html>
 <body>
-    <div>
-        <h1>{{ question.title }}</h1>
-        <br>
-        <span>{{question.upload_time }}</span>
-        <div class="content">{{ question.content }}</div>
+        <div>
+            <div class="detail-container">
+            <h1>{{ question.title }}</h1>
+            <br>
+            <span>{{question.upload_time }}</span>
+            <div class="content">{{ question.content }}</div>
+            <br>
+            <div class="detail-actions">
+                <a href="{%url 'main' %}">홈으로 돌아가기</a>
+                <a href="{%url 'question_delete' question.id %}">삭제하기</a>
+                <a href="{%url 'question_update_page' question.id %}">수정하기</a>
+            </div>
+        </div>
     </div>
     </div>
 </body>

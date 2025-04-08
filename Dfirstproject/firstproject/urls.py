@@ -16,11 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from community.views import List, Qdetail, detail
+from community.views import List, Qdetail, detail, post_new, post_create, question_new, question_create, post_delete, question_delete, post_update, post_update_page, question_update, question_update_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', List, name="main"),
     path('post/<int:pk>/', detail, name="detail"),
     path('question/<int:pk>/', Qdetail, name="Qdetail"),
+    path('post_new/', post_new, name="post_new"),
+    path('post_create/', post_create, name="post_create"),
+    path('question_new/', question_new, name="question_new"),
+    path('question_create/', question_create, name="question_create"),
+    path('post_delete/<int:post_id>', post_delete, name='post_delete'),
+    path('question_delete/<int:question_id>', question_delete, name='question_delete'),
+    path('post_update/<int:post_id>', post_update, name='post_update'),
+    path('post_update_page/<int:post_id>', post_update_page, name='post_update_page'),
+    path('question_update/<int:question_id>', question_update, name='question_update'),
+    path('question_update_page/<int:question_id>', question_update_page, name='question_update_page'),
 ]

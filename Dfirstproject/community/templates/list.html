@@ -1,19 +1,50 @@
+<!-- templates/index.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="{% static 'community/css/list.css' %}">
+    </head>
 <body>
     <div class="content">
-        <h1>아기사자 대나무숲</h1>
-        <h2>자유 게시판</h2>
-        <ul>
-            {% for post in posts %}
-                <li><a href="{% url 'detail' pk=post.id %}">{{post.title}}</a>
-                    <span>{{post.upload_time}}</span></li>
-            {% endfor %}
-        </ul>
-        <h2>질문 게시판</h2>
-        <ul>
-            {% for question in questions %}
-                <li><a href="{% url 'Qdetail' pk=question.id %}">{{question.title}}</a>
-                    <span>{{question.upload_time}}</span></li>
-            {% endfor %}
-        </ul>
+        <h1>🦁 아기사자 대나무숲 🦁</h1>
+        <div class="board-container">
+            <h2>🖇️ 자유 게시판</h2>
+            <a href="{%url 'post_new' %}" class="write-link">새로운 자유 게시글 작성</a>
+            <ul>
+                {% for post in posts %}
+                <div class="post-container">
+                    <h3>{{post.title}}</h3>
+                    <p class="post-date">{{post.upload_time}}</p>
+                    <br />
+                    <p class="post-text">
+                        {{post.summary}}
+                        <a href="{% url 'detail' pk=post.id %}">...more</a>
+                    </p>
+                </div>    
+                {% endfor %}
+            </ul>
+        </div>    
+        <div class="board-container">
+            <h2>🖇️ 질문 게시판</h2>
+            <a href="{%url 'question_new' %}" class="write-link">새로운 질문 게시글 작성</a>
+            <ul>
+                {% for question in questions %}
+                <div class="post-container">
+                    <h3>{{question.title}}</h3>
+                    <p class="post-date">{{question.upload_time}}</p>
+                    <br />
+                    <p class="post-text">
+                        {{question.summary}}
+                        <a href="{% url 'Qdetail' pk=question.id %}">...more</a>
+                    </p>
+                </div>    
+                {% endfor %}
+            </ul>
+        </div>            
     </div>
 </body>
+</html>
