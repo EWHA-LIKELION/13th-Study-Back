@@ -3,6 +3,10 @@ main {
   flex-flow: column nowrap;
   gap: var(--space-24);
 
+  .status {
+    background-clip: padding-box;
+    border: 2px solid transparent;
+  }
   & > h2 {
     width: 100%;
   }
@@ -28,4 +32,9 @@ main {
 }
 aside > ol {
   width: 13.1875rem;
+
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

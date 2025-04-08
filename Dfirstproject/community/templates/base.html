@@ -10,7 +10,7 @@
     {% endblock title %}
     <link rel="stylesheet" href="{% static 'styles/reset.css' %}" />
     <link rel="stylesheet" href="{% static 'styles/global.css' %}" />
-    <link rel="stylesheet" href="{% static 'styles/base.css' %}" />
+    <link rel="stylesheet" href="{% static 'styles/pages/base.css' %}" />
     {% block style %}{% endblock style %}
   </head>
   <body>
@@ -42,8 +42,10 @@
       {% endblock main %}
 	  {% block aside %}
       <aside>
-        <h3>aside title</h3>
-        <ol></ol>
+        <section>
+          <h3>aside title</h3>
+          <ol></ol>
+        </section>
       </aside>
       {% endblock aside %}
     </div>

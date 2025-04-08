@@ -1,0 +1,68 @@
+{% extends "./question_create.html" %}
+
+{% load static %}
+
+{% block title %}
+<title>{{question.title}}</title>
+{% endblock title %}
+
+{% block url %}
+action="{% url 'post_question_update' id=question.id %}"
+{% endblock url %}
+
+{% block title_attribute %}
+value="{{question.title}}"
+{% endblock title_attribute %}
+
+{% block content_attribute %}
+{% endblock content_attribute %}
+
+{% block content_defaultValue %}
+{{question.content}}
+{% endblock content_defaultValue %}
+
+{% block name_attribute %}
+{% if question.name %}
+value="{{question.name}}"
+{% endif %}
+{% endblock name_attribute %}
+
+{% block status_attribute %}
+{% if question.status %}
+checked
+{% endif %}
+{% endblock status_attribute %}
+
+{% block aside %}
+<button
+  class="primary_button action"
+  type="submit"
+  form="question_form"
+>
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 15 15"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g clip-path="url(#clip0_109_116)">
+      <path
+        fill="#FFFDF1"
+        d="M10.4176 1.02783L9.0942 2.35127L12.6489 5.90596L13.9723 4.58252C14.6559 3.89893 14.6559 2.7915 13.9723 2.10791L12.895 1.02783C12.2114 0.344238 11.104 0.344238 10.4204 1.02783H10.4176ZM8.47623 2.96924L2.1024 9.3458C1.81802 9.63018 1.61021 9.98291 1.49537 10.3685L0.527398 13.6579C0.459039 13.8903 0.52193 14.1392 0.691461 14.3087C0.860992 14.4782 1.10982 14.5411 1.33951 14.4755L4.62896 13.5075C5.01451 13.3927 5.36724 13.1849 5.65162 12.9005L12.0309 6.52393L8.47623 2.96924Z"
+      />
+    </g>
+    <defs>
+      <clipPath id="clip0_109_116">
+        <rect
+          width="14"
+          height="14"
+          fill="white"
+          transform="translate(0.5 0.5)"
+        />
+      </clipPath>
+    </defs>
+  </svg>
+  수정하기
+</button>
+{% endblock aside %}
