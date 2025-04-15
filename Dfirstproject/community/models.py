@@ -1,12 +1,12 @@
 from django.db import models
-import django.utils
+from django.utils import timezone
 
 # Create your models here.
 
 class Post(models.Model):
-    title = models.CharField('Title', max_length=50, blank=True)
-    upload_time = models.DateTimeField(unique=True, default=django.utils.timezone.now)
-    content = models.TextField('Content')
+    title = models.CharField(max_length=50)
+    content = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.title
@@ -18,5 +18,5 @@ class Community(Post):
     pass
 
 class Question(Post):
-    name = models.CharField('Name', max_length=10, blank=True)
-    status = models.BooleanField('Status')
+    username = models.CharField(max_length=10, blank=True)
+    status = models.BooleanField()

@@ -21,11 +21,11 @@ value="{{question.title}}"
 {{question.content}}
 {% endblock content_defaultValue %}
 
-{% block name_attribute %}
-{% if question.name %}
-value="{{question.name}}"
+{% block username_attribute %}
+{% if question.username %}
+value="{{question.username}}"
 {% endif %}
-{% endblock name_attribute %}
+{% endblock username_attribute %}
 
 {% block status_attribute %}
 {% if question.status %}

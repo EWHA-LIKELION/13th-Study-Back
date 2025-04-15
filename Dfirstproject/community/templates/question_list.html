@@ -39,8 +39,8 @@
         <td><p class="status done">해결됐어요</p></td>
         {% endif %}
         <td><p>{{question.title}}</p></td>
-        <td><p>{{question.name|default:"익명"}}</p></td>
-        <td><p class="upload_time">{{question.upload_time|date:"Y-m-d"}}</p></td>
+        <td><p>{{question.username|default:"익명"}}</p></td>
+        <td><p class="created_at">{{question.created_at|date:"Y-m-d"}}</p></td>
       </tr>
       {% endfor %}
     </tbody>

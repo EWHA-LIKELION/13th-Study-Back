@@ -24,8 +24,8 @@
   {% endif %}
   <h2>{{question.title}}</h2>
   <div id="info">
-    <p>{{question.name|default:"익명"}}</p>
-    <p>{{question.upload_time|date:"Y-m-d H:i"}}</p>
+    <p>{{question.username|default:"익명"}}</p>
+    <p>{{question.created_at|date:"Y-m-d H:i"}}</p>
   </div>
   <hr />
   <p id="content">{{question.content}}</p>
