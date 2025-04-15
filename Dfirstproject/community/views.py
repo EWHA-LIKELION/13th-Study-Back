@@ -9,8 +9,8 @@ def list(request):
     posts = Community.objects.filter(created_at__lte = timezone.now()).order_by('created_at')
     return render(request, 'list.html', {'posts':posts})
 
-def detail(request, id):
-    post = get_object_or_404(Community, pk=id)
+def detail(request, community_id):
+    post = get_object_or_404(Community, pk=community_id)
     return render(request, 'detail.html', {'post':post})
 
 def get_question_list(request):
@@ -27,8 +27,8 @@ def get_question_list(request):
         questions = Question.objects.only('title', 'created_at', 'username', 'status').order_by('-created_at')
     return render(request, 'question_list.html', {'questions':questions})
 
-def get_question_detail(request, id):
-    question = get_object_or_404(Question, pk=id)
+def get_question_detail(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
     help_questions = Question.objects.filter(status = False).only('status').order_by('-created_at')
     return render(request, 'question_detail.html', {'question':question, 'help_questions':help_questions})
 
@@ -45,13 +45,13 @@ def post_question_create(request):
         return redirect('get_question_detail', created_question.id)
     return redirect('get_question_list')
 
-def get_question_update(request, id):
+def get_question_update(request, question_id):
     form = QuestionForm()
-    question = get_object_or_404(Question, pk=id)
+    question = get_object_or_404(Question, pk=question_id)
     return render(request, 'question_update.html', {'form':form, 'question':question})
 
-def post_question_update(request, id):
-    prev_question = get_object_or_404(Question, pk=id)
+def post_question_update(request, question_id):
+    prev_question = get_object_or_404(Question, pk=question_id)
     form = QuestionForm(request.POST, request.FILES, instance=prev_question)
     if form.is_valid():
         updated_question = form.save(commit=False)
@@ -59,7 +59,7 @@ def post_question_update(request, id):
         return redirect('get_question_detail', updated_question.id)
     return redirect('get_question_list')
 
-def delete_question(requset, id):
-    question = get_object_or_404(Question, pk=id)
+def delete_question(requset, question_id):
+    question = get_object_or_404(Question, pk=question_id)
     question.delete()
     return redirect('get_question_list')

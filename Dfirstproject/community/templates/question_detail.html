@@ -38,7 +38,7 @@
     <button
       class="primary_button action"
       type="button"
-      onclick="location.href=`{% url 'get_question_update' id=question.id %}`"
+      onclick="location.href=`{% url 'get_question_update' question_id=question.id %}`"
     >
       <svg
         width="15"
@@ -69,7 +69,7 @@
     <button
       class="primary_button delete"
       type="button"
-      onclick="location.href=`{% url 'delete_question' id=question.id %}`"
+      onclick="location.href=`{% url 'delete_question' question_id=question.id %}`"
     >
       <svg
         width="15"
@@ -91,7 +91,7 @@
     <ol>
       {% for help_question in help_questions %}
       <li>
-        <a href="{% url 'get_question_detail' id=help_question.id %}">
+        <a href="{% url 'get_question_detail' question_id=help_question.id %}">
           <p>{{help_question.title}}</p>
         </a>
       </li>

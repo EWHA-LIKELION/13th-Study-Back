@@ -32,7 +32,7 @@
     </thead>
     <tbody>
       {% for question in questions %}
-      <tr onclick="location.href=`{% url 'get_question_detail' id=question.id %}`;">
+      <tr onclick="location.href=`{% url 'get_question_detail' question_id=question.id %}`;">
         {% if not question.status %}
         <td><p class="status help">도와주세요</p></td>
         {% else %}
@@ -74,19 +74,19 @@
     <ul>
       <li>
         <button
-          class="status help"
-          type="button"
-          onclick="location.href=`/qna?상태=도와주세요`"
-        >
+		  class="status help"
+		  type="button"
+		  onclick="location.href=`/qna?상태=도와주세요`"
+		>
           <p>도와주세요</p>
         </button>
       </li>
       <li>
         <button
-          class="status done"
-          type="button"
-          onclick="location.href=`/qna?상태=해결됐어요`"
-        >
+		  class="status done"
+		  type="button"
+		  onclick="location.href=`/qna?상태=해결됐어요`"
+		>
           <p>해결됐어요</p>
         </button>
       </li>

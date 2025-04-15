@@ -7,7 +7,7 @@
 {% endblock title %}
 
 {% block url %}
-action="{% url 'post_question_update' id=question.id %}"
+action="{% url 'post_question_update' question_id=question.id %}"
 {% endblock url %}
 
 {% block title_attribute %}
