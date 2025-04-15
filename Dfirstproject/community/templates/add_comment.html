@@ -1,0 +1,8 @@
+{% block content %}
+    <h3>New Comment</h3>
+    <form method="POST" class="post-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">등록</button>
+    </form>
+{% endblock %}
