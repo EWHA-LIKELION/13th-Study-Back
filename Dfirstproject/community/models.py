@@ -3,10 +3,17 @@ from django.utils import timezone
 
 # Create your models here.
 
+class Hashtag(models.Model):
+    hashtag = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.hashtag
+
 class Post(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
+    hashtag = models.ManyToManyField(Hashtag)
 
     def __str__(self):
         return self.title

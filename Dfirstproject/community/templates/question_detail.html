@@ -22,6 +22,11 @@
   {% else %}
   <p class="status done">해결됐어요</p>
   {% endif %}
+  <ul>
+    {% for hashtag in question.hashtag.all %}
+      <li><p>{{hashtag}}</p></li>
+	{% endfor %}
+  </ul>
   <h2>{{question.title}}</h2>
   <div id="info">
     <p>{{question.username|default:"익명"}}</p>

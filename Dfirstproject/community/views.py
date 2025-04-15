@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Community, Question, Answer
+from .models import Hashtag, Community, Question, Answer
 from .forms import QuestionForm, AnswerForm
 
 # Create your views here.
@@ -42,6 +42,12 @@ def post_question_create(request):
         created_question = form.save(commit=False)
         created_question.created_at = timezone.now()
         created_question.save()
+
+        created_hashtags = [word for word in created_question.content.split() if word.startswith('#')]
+        for created_hashtag in created_hashtags:
+            hashtag = Hashtag.objects.get_or_create(hashtag = created_hashtag)
+            created_question.hashtag.add(hashtag[0])
+
         return redirect('get_question_detail', created_question.id)
     return redirect('get_question_list')
 
@@ -55,7 +61,14 @@ def post_question_update(request, question_id):
     form = QuestionForm(request.POST, request.FILES, instance=prev_question)
     if form.is_valid():
         updated_question = form.save(commit=False)
+        updated_question.hashtag.clear()
         updated_question.save()
+
+        updated_hashtags = [word for word in updated_question.content.split() if word.startswith('#')]
+        for updated_hashtag in updated_hashtags:
+            hashtag = Hashtag.objects.get_or_create(hashtag = updated_hashtag)
+            updated_question.hashtag.add(hashtag[0])
+
         return redirect('get_question_detail', updated_question.id)
     return redirect('get_question_list')
 
