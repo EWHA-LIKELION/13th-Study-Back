@@ -28,7 +28,7 @@
     <p>{{question.created_at|date:"Y-m-d H:i"}}</p>
   </div>
   <hr />
-  <p id="content">{{question.content}}</p>
+  <p id="content">{{question.content|linebreaks}}</p>
 </main>
 {% endblock main %}
 
