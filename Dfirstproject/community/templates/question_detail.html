@@ -29,6 +29,107 @@
   </div>
   <hr />
   <p id="content">{{question.content|linebreaks}}</p>
+  <section>
+    <form
+	  action="{% url 'post_answer_create' %}?question_id={{question.id}}"
+	  method="POST"
+	>
+      {% csrf_token %}
+      <fieldset>
+        <input
+		  type="text"
+		  name="username"
+		  maxlength="10"
+		  placeholder="이름"
+		/>
+      </fieldset>
+      <fieldset>
+        <textarea
+		  name="content"
+		  placeholder="내용"
+		  rows="5"
+		  required
+		></textarea>
+      </fieldset>
+      <button
+	    type="submit"
+	  >
+	    답변하기
+	  </button>
+    </form>
+  </section>
+  <section>
+    <ol>
+      {% for answer in question.answers.all %}
+      <li>
+        <article>
+          <p>{{answer.username|default:"익명"}}</p>
+          <p>{{answer.created_at|date:"Y-m-d H:i"}}</p>
+          <p>{{answer.content|linebreaks}}</p>
+          <button
+            type="button"
+            onclick="
+			  const article = this.closest('article');
+			  article.classList.add('hidden');
+			  article.nextElementSibling.classList.remove('hidden');
+			"
+          >
+            수정하기
+          </button>
+          <button
+		    type="button"
+			onclick="location.href=`{% url 'delete_answer' answer_id=answer.id %}`"
+		  >
+            삭제하기
+          </button>
+        </article>
+        <form
+		  class="hidden"
+		  action="{% url 'post_answer_update' answer_id=answer.id %}"
+		  method="POST"
+		>
+          {% csrf_token %}
+          <fieldset>
+            <input
+              type="text"
+              name="username"
+              maxlength="10"
+              placeholder="이름"
+              {% if answer.username %}
+              value="{{answer.username}}"
+              {% endif %}
+            />
+          </fieldset>
+          <fieldset>
+            <textarea
+			  name="content"
+			  placeholder="내용"
+			  rows="5"
+			  required
+			>{{answer.content}}</textarea>
+          </fieldset>
+          <button
+		    type="submit"
+		  >
+		    수정하기
+		  </button>
+          <button
+            type="button"
+            onclick="
+			  const form = this.closest('form');
+			  form.classList.add('hidden');
+			  form.previousElementSibling.classList.remove('hidden');
+			"
+          >
+            수정 취소
+          </button>
+        </form>
+      </li>
+      {% empty %}
+      <p>답변이 없어요.</p>
+      {% endfor %}
+    </ol>
+  </section>
 </main>
 {% endblock main %}
 

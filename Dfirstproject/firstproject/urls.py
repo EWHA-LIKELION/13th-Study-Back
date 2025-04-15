@@ -32,4 +32,8 @@ urlpatterns = [
     path('question/create', post_question_create, name="post_question_create"),
     path('question/<int:question_id>/update', post_question_update, name='post_question_update'),
     path('question/<int:question_id>/delete', delete_question, name='delete_question'),
+ 
+    path('answer/create', post_answer_create, name='post_answer_create'),
+    path('answer/<int:answer_id>/update', post_answer_update, name='post_answer_update'),
+    path('answer/<int:answer_id>/delete', delete_answer, name='delete_answer'),
 ]

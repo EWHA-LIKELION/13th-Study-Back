@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Community, Question
-from .forms import QuestionForm
+from .models import Community, Question, Answer
+from .forms import QuestionForm, AnswerForm
 
 # Create your views here.
 
@@ -63,3 +63,29 @@ def delete_question(requset, question_id):
     question = get_object_or_404(Question, pk=question_id)
     question.delete()
     return redirect('get_question_list')
+
+def post_answer_create(request):
+    question_id = request.GET.get('question_id')
+    question = get_object_or_404(Question, pk=question_id)
+    form = AnswerForm(request.POST)
+    if form.is_valid():
+        created_answer = form.save(commit=False)
+        created_answer.question = question
+        created_answer.created_at = timezone.now()
+        created_answer.save()
+        return redirect('get_question_detail', created_answer.question.id)
+    return redirect('get_question_detail', question.id)
+
+def post_answer_update(request, answer_id):
+    prev_answer = get_object_or_404(Answer, pk=answer_id)
+    form = AnswerForm(request.POST, instance=prev_answer)
+    if form.is_valid():
+        updated_answer = form.save(commit=False)
+        updated_answer.save()
+        return redirect('get_question_detail', updated_answer.question.id)
+    return redirect('get_question_detail', prev_answer.question.id)
+
+def delete_answer(request, answer_id):
+    answer = get_object_or_404(Answer, pk=answer_id)
+    answer.delete()
+    return redirect('get_question_detail', answer.question.id) # answer.question.id는 최종 응답 전까지 메모리에 캐시되어 있음.
