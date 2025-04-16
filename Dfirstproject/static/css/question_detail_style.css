@@ -26,25 +26,48 @@ span {
 .content {
   font-size: 18px;
   white-space: pre-wrap;
-  border-left: 4px solid #f8aeae;
   padding-left: 20px;
-  background-color: #fff8f8;
+  background-color: #fffbfb;
+  border-top: 1px solid #e5bcbc;
+  border-bottom: 1px solid #e5bcbc;
+  margin-bottom: 0;
+}
+
+hr {
+  margin: 30px 0px 30px 0px;
+  border: none;
+  border-top: 1px solid #aaa;
+}
+
+.button-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #ffecec;
+  padding: 0px 20px;
+  margin-top: 10px;
   border-radius: 10px;
 }
 
-/* 기존 back에서 delete, update 추가 */
-  
+.right-buttons {
+  background-color: transparent;
+  display: flex;
+  gap: 10px;
+  margin-right: -20px;
+}
+
 .back,
 .delete,
 .update {
   background-color: white;
   display: inline-block;
-  margin-top: 20px;
+  margin-top: 0;
   font-size: 15px;
   color: rgb(126, 16, 16);
   text-decoration: none;
   border-radius: 8px;
   padding: 5px 10px;
+  font-weight: bold;
 }
 
 .back:hover,
@@ -52,4 +75,108 @@ span {
 .update:hover {
   color: #005fa3;
   text-decoration: underline;
+}
+
+.meta-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0;
+  margin-bottom: -20px;
+}
+
+.hashtags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: -10px;
+  padding-top: 10px;
+  margin-left: -27px;
+}
+
+.tag {
+  display: inline-block;
+  background-color: #f8aeae;
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  margin-right: 6px;
+  margin-bottom: 6px;
+}
+
+.like-btn-container form {
+  margin: 0;
+  padding: 0;
+}
+
+.like-btn-container {
+  text-align: right;
+  margin-top: -10px;
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+
+.like-btn {
+  background-color: rgb(255, 194, 192);
+  color: rgb(126, 16, 16);
+  font-size: 14px;
+  font-weight: bold;
+  border: 0px;
+  padding: 6px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.like-btn:hover {
+  background-color: #fdf0f0; 
+}
+
+.add_comment {
+  display: inline-block;
+  background-color: #fff;
+  color: rgb(126, 16, 16);
+  padding: 6px 12px;
+  border: 1px solid rgb(126, 16, 16);
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-decoration: none;
+}
+
+.add_comment:hover {
+  background-color: rgb(255, 194, 192);
+}
+
+.comment-box {
+  background-color: #fff;
+  border: 1.5px solid #ffd6d6;
+  border-radius: 12px;
+  padding: 5px 3px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.comment-date {
+  font-size: 12px;
+  color: #999;
+  text-align: left;
+  margin-bottom: -30px;
+}
+
+.inline-comment {
+  font-size: 15px;
+  color: #333;
+  margin: 0;
+  padding: 0;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.username {
+  font-weight: bold;
+  color: rgb(90, 0, 0);
+  margin-right: 4px;
 }

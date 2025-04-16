@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from community.views import List, detail, question_detail, new, create, delete, update_page, update
+from community.views import List, detail, question_detail, new, create, delete, update_page, update, add_comment, like_question
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -28,4 +28,6 @@ urlpatterns = [
     path('delete/<int:question_id>', delete, name="delete"),
     path('update_page/<int:question_id>', update_page, name='update_page'),
     path('update/<int:question_id>', update, name='update2'),
+    path('<int:question_id>/comment', add_comment, name='add_comment'),
+    path('question/<int:question_id>/like/', like_question, name='like_question'),
 ]
