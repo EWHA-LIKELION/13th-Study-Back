@@ -36,4 +36,8 @@ urlpatterns = [
     path('answer/create', post_answer_create, name='post_answer_create'),
     path('answer/<int:answer_id>/update', post_answer_update, name='post_answer_update'),
     path('answer/<int:answer_id>/delete', delete_answer, name='delete_answer'),
+
+    path('question/<int:question_id>/like', post_likequestion_createdelete, name='post_likequestion_createdelete'),
+
+    path('answer/<int:answer_id>/like', post_likeanswer_createdelete, name='post_likeanswer_createdelete'),
 ]

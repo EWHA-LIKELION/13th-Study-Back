@@ -34,6 +34,12 @@
   </div>
   <hr />
   <p id="content">{{question.content|linebreaks}}</p>
+  <button
+    type="button"
+	onclick="location.href=`{% url 'post_likequestion_createdelete' question_id=question.id %}?user_id=1`"
+  >
+    {{question.likes.all|length}}
+  </button>
   <section>
     <form
 	  action="{% url 'post_answer_create' %}?question_id={{question.id}}"
@@ -71,6 +77,12 @@
           <p>{{answer.username|default:"익명"}}</p>
           <p>{{answer.created_at|date:"Y-m-d H:i"}}</p>
           <p>{{answer.content|linebreaks}}</p>
+		  <button
+		    type="button"
+			onclick="location.href=`{% url 'post_likeanswer_createdelete' answer_id=answer.id %}?user_id=1`"
+		  >
+		    {{answer.likes.all|length}}
+		  </button>
           <button
             type="button"
             onclick="

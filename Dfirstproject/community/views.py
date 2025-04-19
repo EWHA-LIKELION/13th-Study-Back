@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Hashtag, Community, Question, Answer
+from .models import User, Hashtag, Community, Question, Answer, LikeQuestion, LikeAnswer
 from .forms import QuestionForm, AnswerForm
 
 # Community
@@ -122,3 +122,29 @@ def delete_answer(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
     answer.delete()
     return redirect('get_question_detail', answer.question.id) # answer.question.id는 최종 응답 전까지 메모리에 캐시되어 있음.
+
+# LikeQuestion
+
+## Create & Delete (Toggle)
+
+def post_likequestion_createdelete(request, question_id):
+    user_id = request.GET.get('user_id')
+    question = get_object_or_404(Question, pk=question_id)
+    user = get_object_or_404(User, pk=user_id)
+    obj, created = LikeQuestion.objects.get_or_create(question = question, user = user, defaults={'created_at':timezone.now()})
+    if not created:
+        obj.delete()
+    return redirect('get_question_detail', question_id)
+
+# LikeAnswer
+
+## Create & Delete (Toggle)
+
+def post_likeanswer_createdelete(request, answer_id):
+    user_id = request.GET.get('user_id')
+    answer = get_object_or_404(Answer, pk=answer_id)
+    user = get_object_or_404(User, pk=user_id)
+    obj, created = LikeAnswer.objects.get_or_create(answer = answer, user = user, defaults={'created_at':timezone.now()})
+    if not created:
+        obj.delete()
+    return redirect('get_question_detail', answer.question.id)

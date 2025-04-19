@@ -3,6 +3,12 @@ from django.utils import timezone
 
 # Create your models here.
 
+class User(models.Model):
+    name = models.CharField(max_length=10, unique=True)
+
+    def __str__(self):
+        return self.name
+
 class Hashtag(models.Model):
     hashtag = models.CharField(max_length=20)
 
@@ -36,3 +42,19 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.content
+    
+class LikeQuestion(models.Model):
+    question = models.ForeignKey(Question, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='like_question', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.user.name+" 님이 "+self.question.title+" 질문을 좋아합니다."
+    
+class LikeAnswer(models.Model):
+    answer = models.ForeignKey(Answer, related_name='likes', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='like_answer', on_delete=models.CASCADE)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.user.name+" 님이 "+self.answer.pk+" 답변을 좋아합니다."
