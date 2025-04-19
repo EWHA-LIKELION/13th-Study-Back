@@ -21,15 +21,15 @@ from community.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', list, name="main"),
-    path('<int:community_id>', detail, name="detail"),
+    path('', list, name='main'),
+    path('<int:community_id>', detail, name='detail'),
 
-    path('qna', get_question_list, name="get_question_list"),
-    path('qna/<int:question_id>', get_question_detail, name="get_question_detail"),
-    path('qna/create', get_question_create, name="get_question_create"),
+    path('qna', get_question_list, name='get_question_list'),
+    path('qna/<int:question_id>', get_question_detail, name='get_question_detail'),
+    path('qna/create', get_question_create, name='get_question_create'),
     path('qna/<int:question_id>/update', get_question_update, name='get_question_update'),
 
-    path('question/create', post_question_create, name="post_question_create"),
+    path('question/create', post_question_create, name='post_question_create'),
     path('question/<int:question_id>/update', post_question_update, name='post_question_update'),
     path('question/<int:question_id>/delete', delete_question, name='delete_question'),
  
