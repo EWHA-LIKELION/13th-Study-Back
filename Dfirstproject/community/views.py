@@ -103,7 +103,7 @@ def post_answer_create(request):
         created_answer.created_at = timezone.now()
         created_answer.save()
         return redirect('get_question_detail', created_answer.question.id)
-    return redirect('get_question_detail', question.id)
+    return redirect('get_question_detail', question_id)
 
 ## Update
 
