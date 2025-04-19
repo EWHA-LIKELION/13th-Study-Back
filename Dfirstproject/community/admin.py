@@ -5,3 +5,6 @@ from .models import *
 
 admin.site.register(Post)
 admin.site.register(Question)
+admin.site.register(Comment)
+admin.site.register(Like)
+admin.site.register(Hashtag)
