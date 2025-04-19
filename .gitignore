@@ -11,6 +11,7 @@ media
 ### Environments ###
 .env
 .venv
+newvenv/
 env/
 venv/
 ENV/
