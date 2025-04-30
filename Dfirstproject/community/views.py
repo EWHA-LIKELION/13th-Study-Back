@@ -56,13 +56,11 @@ def get_question_detail(request, question_id):
     return render(request, 'question_detail.html', {'question':question, 'help_questions':help_questions})
 
 def get_question_create(request):
-    form = QuestionForm()
-    return render(request, 'question_create.html', {'form':form})
+    return render(request, 'question_create.html')
 
 def get_question_update(request, question_id):
-    form = QuestionForm()
     question = get_object_or_404(Question, pk=question_id)
-    return render(request, 'question_update.html', {'form':form, 'question':question})
+    return render(request, 'question_update.html', {'question':question})
 
 ## Update
 
