@@ -26,6 +26,7 @@
     enctype="multipart/form-data"
   >
     {% csrf_token %}
+	{% block status %}
     <fieldset id="radio-group">
 	  <label>
         <input
@@ -44,6 +45,7 @@
 		<p class="status done">해결됐어요</p>
 	  </label>
     </fieldset>
+	{% endblock status %}
     <fieldset>
       <input
 	    class="text-h2"

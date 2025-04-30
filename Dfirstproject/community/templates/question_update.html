@@ -10,6 +10,33 @@
 action="{% url 'post_question_update' question_id=question.id %}"
 {% endblock url %}
 
+{% block status %}
+<fieldset id="radio-group">
+  <label>
+	<input
+	  type="radio"
+	  name="status"
+	  value=""
+	  {% if not question.status %}
+	  checked
+	  {% endif %}
+	/>
+	<p class="status help">도와주세요</p>
+  </label>
+  <label>
+	<input
+	  type="radio"
+	  name="status"
+	  value="done"
+	  {% if question.status %}
+	  checked
+	  {% endif %}
+	/>
+	<p class="status done">해결됐어요</p>
+  </label>
+</fieldset>
+{% endblock status %}
+
 {% block title_attribute %}
 value="{{question.title}}"
 {% endblock title_attribute %}
@@ -20,11 +47,6 @@ value="{{question.username}}"
 {% endif %}
 {% endblock username_attribute %}
 
-{% block status_attribute %}
-{% if question.status %}
-checked
-{% endif %}
-{% endblock status_attribute %}
 {% block content_defaultValue %}
 {{question.content}}
 {% endblock content_defaultValue %}
