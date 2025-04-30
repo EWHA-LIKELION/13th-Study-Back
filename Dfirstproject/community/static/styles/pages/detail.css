@@ -1,40 +1,167 @@
-main {
+.detail {
   display: flex;
   flex-flow: column nowrap;
   gap: var(--space-24);
 
-  .status {
-    background-clip: padding-box;
-    border: 2px solid transparent;
-  }
-  & > h2 {
-    width: 100%;
-  }
-  & > div {
-    display: flex;
-    flex-flow: row nowrap;
-  }
-  #info {
-    gap: var(--space-24);
+  padding: var(--space-36);
 
-    & > p {
-      white-space: nowarp;
+  border-radius: 1.5rem;
+  border: 1px solid var(--ewha-grey);
+
+  & > .head {
+    & > .top {
+      display: flex;
+      gap: var(--space-24);
+    }
+    & > .bottom {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+    }
+    .button-list {
+      display: flex;
+      gap: var(--space-24);
+
+      height: 1.25rem;
+      margin-left: auto;
+
+      svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
     }
   }
-  & > hr {
-    width: 100%;
-    height: 1px;
-    background-color: var(--ewha-grey);
+  & > .body {
+    white-space: break-spaces;
   }
-  #content {
-    width: 100%;
+  & > .foot {
+    display: flex;
+    align-items: center;
+    gap: var(--space-24);
+
+    .btn {
+      display: flex;
+      align-items: center;
+      gap: var(--space-6);
+
+      padding: var(--space-6) var(--space-12);
+
+      border-radius: 1rem;
+      border: 1px solid var(--ewha-grey);
+    }
+    .like {
+      color: var(--ewha-green);
+
+      svg {
+        width: 1rem;
+        height: 1rem;
+      }
+      input[type="checkbox"] {
+        display: none;
+      }
+      input:not(:checked) ~ .outline-heart {
+        display: block;
+      }
+      input:checked ~ .outline-heart {
+        display: none;
+      }
+      input:not(:checked) ~ .fill-heart {
+        display: none;
+      }
+      input:checked ~ .fill-heart {
+        display: block;
+      }
+    }
   }
 }
-aside > ol {
-  width: 13.1875rem;
+main {
+  display: flex;
+  flex-flow: column nowrap;
+  gap: var(--space-36);
 
-  p {
-    overflow: hidden;
-    text-overflow: ellipsis;
+  & > #question .detail {
+    & > .head {
+      display: flex;
+      flex-flow: column nowrap;
+      gap: var(--space-24);
+
+      & > .top {
+        & > .status {
+          background-clip: padding-box;
+          border: 2px solid transparent;
+        }
+        & > details {
+          display: flex;
+          color: var(--ewha-mint);
+          margin-top: calc(var(--space-6) + 2px);
+
+          & > summary {
+            display: flex;
+            gap: var(--space-6);
+          }
+          & > summary::after {
+            content: "...더보기";
+            white-space: nowrap;
+            cursor: pointer;
+            color: black;
+            /* body */
+            font-family: "Pretendard";
+            font-size: 16px;
+            font-weight: 500;
+          }
+          &[open] > summary {
+            display: none;
+          }
+          ul {
+            display: flex;
+            flex-wrap: wrap;
+            column-gap: 6px;
+          }
+        }
+        & > .hashtag {
+          display: flex;
+          flex-wrap: nowrap;
+          column-gap: 6px;
+          margin-top: calc(var(--space-6) + 2px);
+          color: var(--ewha-mint);
+        }
+        & > .button-list {
+          margin-top: calc(var(--space-6) + 2px);
+        }
+      }
+      & > .middle {
+        white-space: break-spaces;
+      }
+    }
+    & > hr {
+      width: 100%;
+      height: 1px;
+      background-color: var(--ewha-grey);
+    }
   }
+  & > #create-answer .detail {
+    & > .head {
+      display: flex;
+    }
+  }
+  & > #answer {
+    ol {
+      display: flex;
+      flex-flow: column nowrap;
+      gap: var(--space-36);
+
+      .detail {
+        & > .head {
+          display: flex;
+        }
+      }
+    }
+  }
+  textarea {
+    resize: vertical;
+  }
+}
+aside ol p {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
