@@ -14,9 +14,6 @@ action="{% url 'post_question_update' question_id=question.id %}"
 value="{{question.title}}"
 {% endblock title_attribute %}
 
-{% block content_attribute %}
-{% endblock content_attribute %}
-
 {% block username_attribute %}
 {% if question.username %}
 value="{{question.username}}"
