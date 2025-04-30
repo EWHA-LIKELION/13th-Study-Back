@@ -17,10 +17,6 @@ value="{{question.title}}"
 {% block content_attribute %}
 {% endblock content_attribute %}
 
-{% block content_defaultValue %}
-{{question.content}}
-{% endblock content_defaultValue %}
-
 {% block username_attribute %}
 {% if question.username %}
 value="{{question.username}}"
@@ -32,6 +28,9 @@ value="{{question.username}}"
 checked
 {% endif %}
 {% endblock status_attribute %}
+{% block content_defaultValue %}
+{{question.content}}
+{% endblock content_defaultValue %}
 
 {% block aside %}
 <aside>

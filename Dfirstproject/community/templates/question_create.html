@@ -28,11 +28,19 @@
     {% csrf_token %}
     <fieldset id="radio-group">
 	  <label>
-        <input type="radio" name="status" value="" />
+        <input
+		  type="radio"
+		  name="status"
+		  value=""
+		/>
 		<p class="status help">도와주세요</p>
 	  </label>
 	  <label>
-        <input type="radio" name="status" value="done" />
+        <input
+		  type="radio"
+		  name="status"
+		  value="done"
+		/>
 		<p class="status done">해결됐어요</p>
 	  </label>
     </fieldset>
