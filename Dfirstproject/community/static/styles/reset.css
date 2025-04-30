@@ -33,6 +33,9 @@ ul,
 li {
   list-style: none;
 }
+summary {
+  list-style-type: none;
+}
 blockquote,
 q {
   quotes: none;
