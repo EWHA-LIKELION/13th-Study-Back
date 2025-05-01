@@ -15,6 +15,7 @@
             <p>제목: <input type="text" name="title" value="{{question_update.title}}" /> </p>
             본문 :
             <textarea name="content" cols="30" rows="10">{{question_update.content}}</textarea>
+            <p>해시태그: <input type="text" name = "hashtags" value="{% for tag in question_update.hashtag.all %}{{ tag.hashtag }}, {% endfor %}" placeholder=",로 구분" /></p>
             <button type="submit">수정하기</button>
         </form>
     </body>

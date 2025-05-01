@@ -1,10 +1,39 @@
 <body>
     <div>
-        <h1> {{ questions.title }} </h1>
+        <h1> {{ question.title }} </h1>
         <br>
-        <span> {{ questions.upload_time }} </span>
-        <div class="content">{{questions.content}}</div>
+        <span> {{ question.upload_time }} </span>
+        <div class="content">{{question.content}}</div>
     </div>
+
+    <br />
+    <div>
+        {% for hashtag in question.hashtag.all %}
+            #{{ hashtag }}
+        {% endfor %}
+    </div>
+    
+    <p>{{ num_likes }}명이 좋아합니다.</p> <a href="{% url 'add_like' question.id %}">좋아요</a>
+
+    <hr>
+    {% for comment in question.comments.all %}
+        <div class="comment">
+            <strong class="username">{{ comment.username }} </strong>
+            <div class="date">{{ comment.created_at }}</div>
+            <p>{{ comment.comment_text | linebreaks }} </p>
+        </div>
+    {% empty %}
+        <p>댓글이 없습니다.</p>
+    {% endfor %}
+
+    <!-- Comment Form -->
+    <h2>댓글 달기</h2>
+    <form method="POST" action="{% url 'add_comment' question.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">등록</button>
+    </form>
+
 
     <div>
         <a href="{% url 'question_list' %}">
@@ -13,7 +42,7 @@
         <a href="{% url 'main' %}">
             <button>홈으로</button>
         </a>
-        <a href="{% url 'delete' questions.id %}">삭제하기</a>
-        <a href="{% url 'update_page' questions.id %}">수정하기</a>
+        <a href="{% url 'delete' question.id %}">삭제하기</a>
+        <a href="{% url 'update_page' question.id %}">수정하기</a>
     </div>
 </body>

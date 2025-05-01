@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from community.models import Post, Question
-from .forms import Questionform
+from community.models import *
+from .forms import Questionform, Commentform
+from django.db.models import Count
 
 
 # Create your views here.
@@ -20,8 +21,42 @@ def question_list(request):
     return render(request, 'question_list.html', {'questions': questions})
 
 def question_detail(request, pk):
-    questions = get_object_or_404(Question, pk=pk) # 게시글을 업로드 할 때마다 매기는 번호
-    return render(request, 'question_detail.html', {'questions':questions}) # 화면에 보이게 렌더링
+    question = get_object_or_404(Question, pk=pk) # 게시글을 업로드 할 때마다 매기는 번호
+    num_likes = question.likes.count() # 해당 질문에 대한 좋아요 수를 계산'
+    question_hashtag = question.hashtag.all()
+    form= Commentform()
+    return render(request, 'question_detail.html', {
+        'question':question,
+        'num_likes':num_likes,
+        'form':form,
+        'hashtag': question_hashtag,
+        }) # 화면에 보이게 렌더링
+    
+def add_comment(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    
+    if request.method == 'POST':
+        form = Commentform(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.question = question
+            comment.save()
+            return redirect('question_detail', question.id)
+        
+        else:
+            form = Commentform()
+        return render(request, 'question_detail.html', {'form': form})
+    
+def add_like(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    
+    if request.method == 'POST':
+        like = Like(question=question, username=request.user.username) # 유저 모델로 변경 필요
+        like.save()
+        return redirect('question_detail', question.id)
+    
+    return render(request, 'question_detail.html', {'question': question}) # 화면에 보이게 렌더링
+
 
 def new(request): # new.html 렌더링
     form=Questionform()
@@ -33,7 +68,14 @@ def create(request):
         new_question=form.save(commit=False) # 폼 내용 일시 저장
         new_question.upload_time = timezone.now()
         new_question.save()
+        hashtags = request.POST['hashtags']
+        hashtag = hashtags.split(', ')
+        
+        for tag in hashtag:
+            new_hashtag = Hashtag.objects.get_or_create(hashtag = tag)
+            new_question.hashtag.add(new_hashtag[0])
         return redirect('question_detail', new_question.id)
+    return redirect('list')
 
 def delete(request, question_id):
     question_delete=get_object_or_404(Question, pk=question_id)
@@ -45,13 +87,18 @@ def update_page(request, question_id):
     return render(request, 'update.html', {'question_update':question_update})
 
 def update(request, question_id):
-    if request.method == 'POST':
-        question_update = get_object_or_404(Question, pk=question_id)
-        question_update.title = request.POST['title']
-        question_update.content = request.POST['content']
-        question_update.save()
-        return redirect('main')
-    else:
-        return redirect('update_page', question_id=question_id)
+    question_update=get_object_or_404(Question, pk=question_id)
+    question_update.title=request.POST['title']
+    question_update.body=request.POST['content']
+    question_update.save()
+    
+    hashtags = request.POST['hashtags']
+    hashtag = hashtags.split(', ')
+    for tag in hashtag:
+        new_hashtag, created = Hashtag.objects.get_or_create(hashtag=tag)
+        question_update.hashtag.add(new_hashtag)
+        
+    return redirect('main')
+
 
 

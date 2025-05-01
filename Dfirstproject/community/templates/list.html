@@ -1,26 +1,29 @@
+
+
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+
 <body>
     <div class="content">
-        <h1> 아기사자 대나무숲 </h1>
+        <h1 class="title"> 아기사자 대나무숲 </h1>
         
-        <h2> 게시판 </h2>
+        <!-- <h2> 자유게시판 </h2>
         <ul>
             {% for post in posts %}
                 <li><a href="{% url 'detail' pk=post.id %}">{{ post.title }}</a>
                     <span>{{post.upload_time}}</span></li>
             {% endfor %}
-        </ul>
+        </ul> -->
 
         
 
 
 
-        <h2> 질문 </h2>
+        <h2 style="margin: 10px;"> Q&A </h2>
         
-        <div> 
             <a href="{% url 'question_list' %}">
             <button>질문 목록 보기</button>
             </a>
-        </div>
 
         <a href="{%url 'new' %}">
             <button>글쓰기</button>
@@ -29,7 +32,7 @@
         
 
 
-        <ul>
+        <ul class="q_list">
             {% for question in questions %}
             <li><a href="{% url 'question_detail' pk=question.id %}">{{ question.title }}</a>
                 <span>{{question.upload_time}}</span></li>

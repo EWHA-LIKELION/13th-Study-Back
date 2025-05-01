@@ -29,6 +29,8 @@ urlpatterns = [
     path('delete/<int:question_id>/', community.views.delete, name="delete"),
     path('update_page/<int:question_id>', community.views.update_page, name='update_page'),
     path('update/<int:question_id>', community.views.update, name='update2'),
+    path('question/<int:question_id>/add_comment/', community.views.add_comment, name='add_comment'),
+    path('like/<int:question_id>/', community.views.add_like, name='add_like'), # 좋아요 view도 만들자자
 ]
 
 
