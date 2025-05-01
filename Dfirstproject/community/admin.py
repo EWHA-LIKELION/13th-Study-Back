@@ -7,3 +7,8 @@ admin.site.register(Post)
 
 admin.site.register(Question)
 
+admin.site.register(CommentForPost)
+admin.site.register(CommentForQuestion)
+
+admin.site.register(Hashtag)
+

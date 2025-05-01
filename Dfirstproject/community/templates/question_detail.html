@@ -5,9 +5,30 @@
         <div>
             <div class="detail-container">
             <h1>{{ question.title }}</h1>
+            <form action="{% url 'question_like' question.pk %}" method="post">
+                {% csrf_token %}
+                <button type="submit">
+                  ❤️ 좋아요 {{ question.likes_count }}
+                </button>
+              </form>
             <br>
             <span>{{question.upload_time }}</span>
-            <div class="content">{{ question.content }}</div>
+            <p>{{ question.content }}</p>
+            <div>
+                {% for hashtag in question.hashtag.all %}
+                    #{{hashtag}}
+                {% endfor %}
+            </div>
+            <a href="{% url 'add_commentforquestion' question.id %}" class="add_commentforquestion">댓글달기</a>
+            {% for comment in question.comments.all %}
+                <div class="content">
+                    <strong calss="username">{{ comment.username }}</strong>
+                    <div class="date">{{ comment.creatae_at }}</div>
+                    <p>{{ comment.comment_text | linebreaks }}</p>
+                </div>
+            {% empty %}
+                <p>아직 댓글이 없어요</p>
+            {% endfor %}
             <br>
             <div class="detail-actions">
                 <a href="{%url 'main' %}">홈으로 돌아가기</a>
