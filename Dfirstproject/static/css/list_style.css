@@ -55,20 +55,18 @@ span {
   margin-top: 4px;
 }
 
-/* 기존 코드에서 새 글 작성 버튼, summary css 추가했습니다 */
-
 a.new-btn {
   display: inline-block;
   margin-bottom: 20px;
   padding: 10px 15px;
-  background-color: rgb(255, 209, 207);
+  background-color: rgb(255, 194, 192);
   color: black;
   border-radius: 12px;
   font-weight: bold;
 }
 
 a.new-btn:hover {
-  background-color: rgb(255, 194, 192);
+  background-color: #fdf0f0;
 }
 
 div.summary {

@@ -15,7 +15,7 @@ h1 {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-form {
+.question-form {
   background-color: white;
   padding: 30px 50px 30px 30px;
   border-radius: 12px;
@@ -23,7 +23,7 @@ form {
   margin: 0;
 }
 
-form p {
+.question-form p {
   margin-bottom: 20px;
   font-size: 15px;
 }
@@ -47,7 +47,7 @@ button[type="submit"] {
   font-size: 15px;
   font-weight: bold;
   display: block;
-  margin: 20px auto 0 auto;
+  margin: 0 auto;
 }
 
 button[type="submit"]:hover {

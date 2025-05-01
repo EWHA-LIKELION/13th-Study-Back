@@ -10,9 +10,47 @@
     <br>
     <span>{{question.upload_time }}</span>
     <div class="content">{{ question.content }}</div>
+
+    
+    <div class="meta-bar">
+      <div class="hashtags">
+        {% for hashtag in question.hashtag.all %}
+          <span class="tag">#{{ hashtag }}</span>
+        {% endfor %}
+      </div>
+      <div class="like-btn-container">
+        <form action="{% url 'like_question' question.id %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="like-btn">❤️ 좋아요 ({{ question.like }})</button>
+        </form>
+      </div>
+    </div>    
   </div>
 
-  <a href="{% url 'main' %}" class="back">🔙 back</a>
-  <a href="{% url 'delete' question.id %}" class="delete">✖️ delete</a>
-  <a href="{% url 'update_page' question.id %}" class="update">💱 update</a>
+  <div class="button-bar">
+    <a href="{% url 'main' %}" class="back">🔙 back</a>
+    <div class="right-buttons">
+      <a href="{% url 'delete' question.id %}" class="delete">✖️ delete</a>
+      <a href="{% url 'update_page' question.id %}" class="update">💱 update</a>
+    </div>
+  </div>
+
+  <hr>
+  
+  <div>
+    <a href="{% url 'add_comment' question.id %}" class="add_comment">댓글달기</a>  
+    {% for comment in question.comments.all %}
+    <div class="comment-box">
+      <div class="comment-date">{{ comment.created_at }}</div>
+      <div class="comment-top">
+        <p class="inline-comment">
+          <strong class="username">{{ comment.username }}</strong>: {{ comment.comment_text }}
+        </p>
+      </div>
+    </div>        
+    {% empty %}
+      <p>아직 댓글이 없어요</p>
+    {% endfor %}
+</div>
+
 </body>

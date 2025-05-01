@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from community.models import Post
-from community.models import Question
-from community.forms import Questionform
+from community.models import Question, Hashtag
+from community.forms import Questionform, Commentform
 # Create your views here.
 
 def List(request):
@@ -15,8 +15,9 @@ def detail(request, pk):
   return render(request, 'detail.html', {'post':post})
 
 def question_detail(request, pk):
-  question = get_object_or_404(Question, pk=pk)
-  return render(request, 'question_detail.html', {'question': question})
+  question_detail = get_object_or_404(Question, pk=pk)
+  question_hashtag = question_detail.hashtag.all()
+  return render(request, 'question_detail.html', {'question': question_detail, 'hashtag': question_hashtag})
 
 def new(request):
   form=Questionform()
@@ -28,6 +29,12 @@ def create(request):
     new_community=form.save(commit=False)
     new_community.upload_time=timezone.now()
     new_community.save()
+    hashtags = request.POST['hashtags']
+    hashtag = hashtags.split(', ')
+
+    for tag in hashtag:
+      new_hashtag = Hashtag.objects.get_or_create(hashtag = tag)
+      new_community.hashtag.add(new_hashtag[0])
     return redirect('question_detail', new_community.id)
   return redirect('main')
 
@@ -46,3 +53,25 @@ def update(request, question_id):
   community_update.content=request.POST['content']
   community_update.save()
   return redirect('main')
+
+def add_comment(request, question_id):
+  community = get_object_or_404(Question, pk = question_id)
+
+  if request.method == 'POST':
+    form = Commentform(request.POST)
+
+    if form.is_valid:
+      comment = form.save(commit=False)
+      comment.question = community
+      comment.save()
+      return redirect('question_detail', question_id)
+  
+  else:
+    form = Commentform()
+  return render(request, 'add_comment.html', {'form': form})
+
+def like_question(request, question_id):
+  question = get_object_or_404(Question, pk=question_id)
+  question.like += 1
+  question.save()
+  return redirect('question_detail', pk=question_id)
