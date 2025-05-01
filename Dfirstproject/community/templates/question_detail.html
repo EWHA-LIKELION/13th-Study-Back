@@ -17,81 +17,223 @@
 
 {% block main %}
 <main>
-  {% if not question.status %}
-  <p class="status help">도와주세요</p>
-  {% else %}
-  <p class="status done">해결됐어요</p>
-  {% endif %}
-  <h2>{{question.title}}</h2>
-  <div id="info">
-    <p>{{question.name|default:"익명"}}</p>
-    <p>{{question.upload_time|date:"Y-m-d H:i"}}</p>
-  </div>
-  <hr />
-  <p id="content">{{question.content}}</p>
+  <section id="question">
+    <article class="detail">
+	  <div class="head">
+		<div class="top">
+		  {% if not question.status %}
+		  <p class="status help">도와주세요</p>
+		  {% else %}
+		  <p class="status done">해결됐어요</p>
+		  {% endif %}
+		  {% if question.hashtag.all|length > 3 %}
+		  <details>
+			<summary>
+			  <ul>
+				{% for hashtag in question.hashtag.all|slice:":3" %}
+				<li><p>{{hashtag}}</p></li>
+				{% endfor %}
+			  </ul>
+			</summary>
+			<ul>
+			  {% for hashtag in question.hashtag.all %}
+			  <li><p>{{hashtag}}</p></li>
+			  {% endfor %}
+			  <button
+				onclick="this.closest('details').removeAttribute('open')"
+			  >
+				<p>접기</p>
+			  </button>
+			</ul>
+		  </details>
+		  {% elif question.hashtag.all|length > 0 %}
+		  <ul class="hashtag">
+			{% for hashtag in question.hashtag.all %}
+			<li><p>{{hashtag}}</p></li>
+			{% endfor %}
+		  </ul>
+		  {% endif %}
+		  <ul class="button-list">
+			<li>
+			  <button
+				type="button"
+				onclick="location.href=`{% url 'get_question_update' question_id=question.id %}`"
+			  >
+				<svg><use href="#AiOutlineEdit" /></svg>
+			  </button>
+			</li>
+			<li>
+			  <button
+				type="button"
+				onclick="location.href=`{% url 'delete_question' question_id=question.id %}`"
+			  >
+				<svg><use href="#AiOutlineDelete" /></svg>
+			  </button>
+			</li>
+		  </ul>
+		</div>
+		<h2 class="middle">{{question.title}}</h2>
+		<div class="bottom">
+		  <h3>{{question.username|default:"익명"}}</h3>
+		  <p>·</p>
+		  <p>{{question.created_at|date:"Y-m-d H:i"}}</p>
+		</div>
+	  </div>
+	  <hr />
+	  <p class="body">{{question.content}}</p>
+	  <div class="foot">
+		<label class="btn like">
+		  <input
+			type="checkbox"
+			onclick="location.href=`{% url 'post_likequestion_createdelete' question_id=question.id %}?user_id=1`"
+		  />
+		  <svg class="outline-heart"><use href="#AiOutlineHeart" /></svg>
+		  <svg class="fill-heart"><use href="#AiFillHeart" /></svg>
+		  <p>{{question.likes.all|length}}</p>
+		</label>
+	  </div>
+    </article>
+  </section>
+  <section id="create-answer">
+    <form
+	  class="detail"
+	  action="{% url 'post_answer_create' %}?question_id={{question.id}}"
+	  method="POST"
+	>
+      {% csrf_token %}
+      <div class="head">
+        <input
+		  class="text-h3"
+		  type="text"
+		  name="username"
+		  maxlength="10"
+		  placeholder="이름"
+		/>
+		<button
+		  class="button-list"
+		  type="submit"
+		>
+		  <svg><use href="#AiOutlineEdit" /></svg>
+		</button>
+      </div>
+	  <textarea
+	    class="body text-body"
+		name="content"
+		placeholder="답변을 입력해 주세요."
+		rows="4"
+		required
+	  ></textarea>
+    </form>
+  </section>
+  <section id="answer">
+    <ol>
+      {% for answer in question.answers.all %}
+      <li>
+        <article class="detail">
+		  <div class="head">
+			<div class="bottom">
+              <h3>{{answer.username|default:"익명"}}</h3>
+			  <p>·</p>
+              <p>{{answer.created_at|date:"Y-m-d H:i"}}</p>
+			</div>
+			<ul class="button-list">
+			  <li>
+				<button
+				  type="button"
+				  onclick="
+					const article = this.closest('article');
+					article.classList.add('hidden');
+					article.nextElementSibling.classList.remove('hidden');
+				  "
+				>
+				  <svg><use href="#AiOutlineEdit" /></svg>
+				</button>
+			  </li>
+			  <li>
+				<button
+				  type="button"
+				  onclick="location.href=`{% url 'delete_answer' answer_id=answer.id %}`"
+				>
+				  <svg><use href="#AiOutlineDelete" /></svg>
+				</button>
+			  </li>
+			</ul>
+		  </div>
+          <p class="body">{{answer.content}}</p>
+		  <div class="foot">
+			<label class="btn like">
+			  <input
+				type="checkbox"
+				onclick="location.href=`{% url 'post_likeanswer_createdelete' answer_id=answer.id %}?user_id=1`"
+			  />
+			  <svg class="outline-heart"><use href="#AiOutlineHeart" /></svg>
+			  <svg class="fill-heart"><use href="#AiFillHeart" /></svg>
+			  <p>{{answer.likes.all|length}}</p>
+			</label>
+		  </div>
+        </article>
+        <form
+		  class="detail hidden"
+		  action="{% url 'post_answer_update' answer_id=answer.id %}"
+		  method="POST"
+		>
+          {% csrf_token %}
+          <div class="head">
+            <input
+			  class="text-h3"
+              type="text"
+              name="username"
+              maxlength="10"
+              placeholder="이름"
+              {% if answer.username %}
+              value="{{answer.username}}"
+              {% endif %}
+            />
+			<ul class="button-list">
+			  <li>
+				<button
+				  type="submit"
+				>
+				  <svg><use href="#AiOutlineEdit" /></svg>
+				</button>
+			  </li>
+			  <li>
+				<button
+				  type="button"
+				  onclick="
+					const form = this.closest('form');
+					form.classList.add('hidden');
+					form.previousElementSibling.classList.remove('hidden');
+				  "
+				>
+				  <svg><use href="#AiOutlineClose" /></svg>
+				</button>
+			  </li>
+			</ul>
+          </div>
+		  <textarea
+		    class="body text-body"
+			name="content"
+			placeholder="답변을 입력해 주세요."
+			rows="4"
+			required
+		  >{{answer.content}}</textarea>
+        </form>
+      </li>
+      {% endfor %}
+    </ol>
+  </section>
 </main>
 {% endblock main %}
 
 {% block aside %}
 <aside>
-  <ul>
-    <button
-      class="primary_button action"
-      type="button"
-      onclick="location.href=`{% url 'get_question_update' id=question.id %}`"
-    >
-      <svg
-        width="15"
-        height="15"
-        viewBox="0 0 15 15"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <g clip-path="url(#clip0_109_116)">
-          <path
-            fill="#FFFDF1"
-            d="M10.4176 1.02783L9.0942 2.35127L12.6489 5.90596L13.9723 4.58252C14.6559 3.89893 14.6559 2.7915 13.9723 2.10791L12.895 1.02783C12.2114 0.344238 11.104 0.344238 10.4204 1.02783H10.4176ZM8.47623 2.96924L2.1024 9.3458C1.81802 9.63018 1.61021 9.98291 1.49537 10.3685L0.527398 13.6579C0.459039 13.8903 0.52193 14.1392 0.691461 14.3087C0.860992 14.4782 1.10982 14.5411 1.33951 14.4755L4.62896 13.5075C5.01451 13.3927 5.36724 13.1849 5.65162 12.9005L12.0309 6.52393L8.47623 2.96924Z"
-          />
-        </g>
-        <defs>
-          <clipPath id="clip0_109_116">
-            <rect
-              width="14"
-              height="14"
-              fill="white"
-              transform="translate(0.5 0.5)"
-            />
-          </clipPath>
-        </defs>
-      </svg>
-      수정하기
-    </button>
-    <button
-      class="primary_button delete"
-      type="button"
-      onclick="location.href=`{% url 'delete_question' id=question.id %}`"
-    >
-      <svg
-        width="15"
-        height="15"
-        viewBox="0 0 15 15"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <path
-          fill="#FFFDF1"
-          d="M13.66 3.02H11.42V1.62C11.42 1.00225 10.9178 0.5 10.3 0.5H4.70003C4.08228 0.5 3.58003 1.00225 3.58003 1.62V3.02H1.34003C1.03028 3.02 0.780029 3.27025 0.780029 3.58V4.14C0.780029 4.217 0.843029 4.28 0.920029 4.28H1.97703L2.40928 13.4325C2.43728 14.0293 2.93078 14.5 3.52753 14.5H11.4725C12.071 14.5 12.5628 14.031 12.5908 13.4325L13.023 4.28H14.08C14.157 4.28 14.22 4.217 14.22 4.14V3.58C14.22 3.27025 13.9698 3.02 13.66 3.02ZM10.16 3.02H4.84003V1.76H10.16V3.02Z"
-        />
-      </svg>
-      삭제하기
-    </button>
-  </ul>
   <section>
     <h3>이 질문도 도와주세요!</h3>
     <ol>
       {% for help_question in help_questions %}
       <li>
-        <a href="{% url 'get_question_detail' id=help_question.id %}">
+        <a href="{% url 'get_question_detail' question_id=help_question.id %}">
           <p>{{help_question.title}}</p>
         </a>
       </li>

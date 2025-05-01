@@ -11,8 +11,8 @@
       <ul>
         {% for post in posts %}
         <li>
-          <a href="{% url 'detail' id=post.id %}">{{post.title}}</a>
-          <span>{{post.upload_time}}</span>
+          <a href="{% url 'detail' community_id=post.id %}">{{post.title}}</a>
+          <span>{{post.created_at}}</span>
         </li>
         {% endfor %}
       </ul>

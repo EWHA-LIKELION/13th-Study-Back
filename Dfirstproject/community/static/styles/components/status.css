@@ -2,8 +2,11 @@
   width: fit-content;
   height: fit-content;
   padding: var(--space-6) var(--space-12);
+
   border-radius: 1rem;
   background-color: var(--light-grey);
+
+  white-space: nowrap;
 }
 .help {
   color: var(--ewha-coral);

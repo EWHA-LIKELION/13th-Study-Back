@@ -8,36 +8,46 @@ h1 {
   font-family: "Ewha";
   font-size: 48px;
   font-weight: 400;
-  font-style: normal;
-  line-height: normal;
+}
+.text-h1 {
+  font-family: "Ewha";
+  font-size: 48px;
+  font-weight: 400;
 }
 h2 {
   font-family: "Ewha";
   font-size: 24px;
   font-weight: 400;
-  font-style: normal;
-  line-height: normal;
+}
+.text-h2 {
+  font-family: "Ewha";
+  font-size: 24px;
+  font-weight: 400;
 }
 h3 {
   font-family: "Ewha";
   font-size: 18px;
   font-weight: 400;
-  font-style: normal;
-  line-height: normal;
+}
+.text-h3 {
+  font-family: "Ewha";
+  font-size: 18px;
+  font-weight: 400;
 }
 p {
   font-family: "Pretendard";
   font-size: 16px;
   font-weight: 500;
-  font-style: normal;
-  line-height: normal;
+}
+.text-body {
+  font-family: "Pretendard";
+  font-size: 16px;
+  font-weight: 500;
 }
 button {
   font-family: "Pretendard";
   font-size: 16px;
   font-weight: 600;
-  font-style: normal;
-  line-height: normal;
 }
 
 :root {
@@ -58,4 +68,8 @@ button {
   --space-36: 2.25rem;
   --space-48: 3rem;
   --space-72: 4.5rem;
+}
+
+.hidden {
+  display: none !important;
 }
