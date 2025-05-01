@@ -2,8 +2,9 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from community.models import Post
 from community.models import Question
+from community.models import Hashtag
 from django.utils import timezone
-from .forms import Postform, Questionform
+from .forms import Postform, Questionform, CommentForPostform, CommentForQuestionform
 
 # Create your views here.
 
@@ -19,11 +20,13 @@ def List(request):
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'post_detail.html', {'post':post})
+    post_hashtag = post.hashtag.all()
+    return render(request, 'post_detail.html', {'post':post, 'hashtag':post_hashtag})
 
 def Qdetail(request, pk):
     question = get_object_or_404(Question, pk=pk)
-    return render(request, 'question_detail.html', {'question':question})
+    question_hashtag = question.hashtag.all()
+    return render(request, 'question_detail.html', {'question':question, 'hashtag':question_hashtag})
 
 
 #포스트 등록 함수 
@@ -37,6 +40,12 @@ def post_create(request):
         new_post=form.save(commit=False)
         new_post.upload_time=timezone.now()
         new_post.save()
+        hashtags=request.POST['hashtags']
+        hashtag = hashtags.split(', ')
+
+        for tag in hashtag:
+            new_hashtag=Hashtag.objects.get_or_create(hashtag=tag)
+            new_post.hashtag.add(new_hashtag[0])
         return redirect('detail', new_post.id)
     return redirect('main')
 
@@ -51,6 +60,12 @@ def question_create(request):
         new_question=form.save(commit=False)
         new_question.upload_time=timezone.now()
         new_question.save()
+        hashtags=request.POST['hashtags']
+        hashtag = hashtags.split(', ')
+
+        for tag in hashtag:
+            new_hashtag=Hashtag.objects.get_or_create(hashtag=tag)
+            new_question.hashtag.add(new_hashtag[0])
         return redirect('Qdetail', new_question.id)
     return redirect('main')
 
@@ -90,3 +105,52 @@ def question_update(request, question_id):
     question_update.save()
     return redirect('main')
     
+#포스트 댓글 함수
+def add_commentforpost(request, post_id):
+    post=get_object_or_404(Post, pk=post_id)
+
+    if request.method=='POST':
+        form=CommentForPostform(request.POST)
+
+        if form.is_valid():
+            comment=form.save(commit=False)
+            comment.post=post
+            comment.save()
+            return redirect('detail', pk=post.pk)
+        
+    else:
+        form=CommentForPostform()
+    return render(request, 'add_commentforpost.html',{'form':form, 'post':post,})
+
+#질문 댓글 함수
+def add_commentforquestion(request, question_id):
+    question=get_object_or_404(Question, pk=question_id)
+
+    if request.method=='POST':
+        form=CommentForQuestionform(request.POST)
+
+        if form.is_valid():
+            comment=form.save(commit=False)
+            comment.quesiton=question
+            comment.save()
+            return redirect('Qdetail', pk=question.pk)
+        
+    else:
+        form=CommentForQuestionform()
+    return render(request, 'add_commentforquestion.html',{'form':form, 'question':question,})
+
+#포스트 좋아요 함수
+def post_like(request, post_id):
+    post = get_object_or_404(Post, pk=post_id)
+    if request.method == 'POST':
+        post.likes_count += 1
+        post.save()
+    return redirect('detail', pk=post.pk)
+
+#질문 좋아요 함수 
+def question_like(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    if request.method == 'POST':
+        question.likes_count += 1
+        question.save()
+    return redirect('Qdetail', pk=question.pk)
