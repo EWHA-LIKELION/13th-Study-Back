@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>홈</title>
+  </head>
+  <body>
+    {% if not user.is_authenticated %}
+    <a href="{% url 'signup' %}">회원가입</a>
+    <a href="{% url 'login' %}">로그인</a>
+    {% else %}
+    <a href="{% url 'logout' %}">로그아웃</a>
+    <section>
+      <h3>로그인 정보</h3>
+      <p>아이디: {{user.username}}</p>
+      <p>이름: {{user.first_name}}{{user.last_name}}</p>
+      <p>이메일: {{user.email}}</p>
+      <p>대학: {{user.university}}</p>
+      <p>기수: {{user.generation}}</p>
+      <p>파트: {{user.part}}</p>
+      <p>직급: {{user.level}}</p>
+    </section>
+    {% endif %}
+  </body>
+</html>
