@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from community.views import List, Qdetail, detail, post_new, post_create, question_new, question_create, post_delete, question_delete, post_update, post_update_page, question_update, question_update_page, add_commentforpost, add_commentforquestion, post_like, question_like
-
+import accounts.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -38,4 +38,7 @@ urlpatterns = [
     path('question/<int:question_id>/comment/', add_commentforquestion, name='add_commentforquestion'),
     path('post/<int:post_id>/like/', post_like, name='post_like'),
     path('question/<int:question_id>/like/', question_like, name='question_like'),
+    path('accounts/login', accounts.views.login_view, name="login"),
+    path('accounts/logout', accounts.views.logout_view, name="logout"),
+    path('accounts/signup', accounts.views.singup_view, name="signup"),
 ]
