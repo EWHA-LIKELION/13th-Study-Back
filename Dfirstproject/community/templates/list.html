@@ -17,9 +17,24 @@
         }
     </style>
 </head>
+
+{% if not user.is_authenticated %}
+    <a href="{% url 'signup' %}">회원가입하기</a>
+    <a href="{% url 'login' %}">로그인하기</a>
+{% endif %}
+{% if user.is_authenticated %}  
+    <a href="{% url 'logout' %}">로그아웃하기</a> 
+    <p>로그인 한 사람: {{ user.username }}
+    <br>
+    <hr>
+    아이디 : {{user.username}} 닉네임: {{user.nickname}} 나이: {{user.age}} 성별: {{user.gender}}
+</p>
+{% endif %}
+
 <body>
     <div class = "content">
         <h1> 🦁아기사자 대나무숲🦁</h1>
+        
         <h2> ❤️자유게시판❤️</h2>
     </div>
     <div class = "new">

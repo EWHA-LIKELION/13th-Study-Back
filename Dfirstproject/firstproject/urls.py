@@ -18,12 +18,13 @@ from django.contrib import admin
 from django.urls import path
 from community.views import List, detail_post, detail_question, new, create, delete, update_page, update, new_question, create_question, delete_question, update_q_page, update_q
 from community.views import add_comment
+from accounts.views import login_view, logout_view, signup_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', List, name="list"),
     path('post/<int:post_id>/', detail_post, name="detail_post"),
-    #path('', List_question, name="list_question"),
+    # path('', List_question, name="list_question"),
     path('question/<int:question_id>/', detail_question, name="detail_question"),
     
     path('new/', new, name="new"),
@@ -33,6 +34,9 @@ urlpatterns = [
     path('update/<int:post_id>/', update, name='update2'),
 
     path('<int:post_id>/comment', add_comment, name='add_comment'),
+    path('accounts/login', login_view, name="login"),
+    path('accounts/login', logout_view, name="logout"),
+    path('accounts/signup',signup_view,name="signup"),
 
     path('question/new/', new_question, name="new_question"),
     path('question/create/', create_question, name="create_question"),
