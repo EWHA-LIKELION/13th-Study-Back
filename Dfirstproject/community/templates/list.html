@@ -2,12 +2,26 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<!-- < lang="en"> -->
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="stylesheet" href="{% static 'community/css/list.css' %}">
     </head>
+
+{% if not user.is_authenticated %}
+    <a href="{% url 'signup' %}">회원가입하기</a>
+    <a href="{% url 'login' %}">로그인하기</a>
+{% endif %}
+{% if user.is_authenticated %}
+    <a href="{% url 'logout' %}">로그아웃하기</a>
+    <p>로그인 한 사람: {{ user.username }}
+        <br>
+        <hr>
+        아이디: {{user.username}} 닉네임: {{user.nickname}} 대학: {{user.university}} 학과: {{user.major}} 학기: {{user.semester}} 위치: {{user.location}}
+    </p>    
+{% endif %}
+
 <body>
     <div class="content">
         <h1>🦁 아기사자 대나무숲 🦁</h1>
