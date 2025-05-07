@@ -22,12 +22,10 @@ def question_list(request):
 
 def question_detail(request, pk):
     question = get_object_or_404(Question, pk=pk) # 게시글을 업로드 할 때마다 매기는 번호
-    num_likes = question.likes.count() # 해당 질문에 대한 좋아요 수를 계산'
     question_hashtag = question.hashtag.all()
     form= Commentform()
     return render(request, 'question_detail.html', {
         'question':question,
-        'num_likes':num_likes,
         'form':form,
         'hashtag': question_hashtag,
         }) # 화면에 보이게 렌더링
@@ -46,16 +44,6 @@ def add_comment(request, question_id):
         else:
             form = Commentform()
         return render(request, 'question_detail.html', {'form': form})
-    
-def add_like(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    
-    if request.method == 'POST':
-        like = Like(question=question, username=request.user.username) # 유저 모델로 변경 필요
-        like.save()
-        return redirect('question_detail', question.id)
-    
-    return render(request, 'question_detail.html', {'question': question}) # 화면에 보이게 렌더링
 
 
 def new(request): # new.html 렌더링
@@ -67,6 +55,7 @@ def create(request):
     if form.is_valid():
         new_question=form.save(commit=False) # 폼 내용 일시 저장
         new_question.upload_time = timezone.now()
+        new_question.user = request.user 
         new_question.save()
         hashtags = request.POST['hashtags']
         hashtag = hashtags.split(', ')
@@ -99,5 +88,18 @@ def update(request, question_id):
         question_update.hashtag.add(new_hashtag)
         
     return redirect('main')
+
+def likes(request, question_id):
+    if request.user.is_authenticated:
+        question = get_object_or_404(Question, pk=question_id)
+
+        if question.like_users.filter(pk=request.user.pk).exists():
+            question.like_users.remove(request.user)
+        else:
+            question.like_users.add(request.user)
+        return redirect('question_detail', question_id)
+    return redirect('accouts:login')
+
+
 
 
