@@ -63,6 +63,7 @@ def add_comment(request, question_id):
     if form.is_valid:
       comment = form.save(commit=False)
       comment.question = community
+      comment.username = request.user.nickname
       comment.save()
       return redirect('question_detail', question_id)
   

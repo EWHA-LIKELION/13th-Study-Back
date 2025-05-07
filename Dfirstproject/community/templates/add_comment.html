@@ -6,7 +6,9 @@
 
 {% block content %}
   <h1>✍️ 새로운 댓글 작성하기 ✍️</h1>
+  
   <form method="POST" class="question-form">
+    <p><strong>작성자:</strong> {{ user.nickname }}</p>
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">등록</button>

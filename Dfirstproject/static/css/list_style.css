@@ -9,7 +9,7 @@ h1 {
   background-color: white;
   text-align: center;
   padding: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   font-size: 32px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -76,4 +76,60 @@ div.summary {
   padding: 10px;
   border-radius: 12px;
   margin-bottom: 20px;
+}
+
+.auth-box {
+  background-color: white;
+  padding: 15px 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-btn {
+  display: inline-block;
+  padding: 8px 14px;
+  background-color: rgb(255, 194, 192);
+  color: black;
+  font-weight: bold;
+  border-radius: 10px;
+  text-decoration: none;
+}
+
+.auth-btn:hover {
+  color: black;
+  background-color: #fdf0f0;
+}
+
+.auth-btn.logout {
+  background-color: rgb(255, 194, 192);
+  color: black;
+  padding: 6px 10px;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  width: auto;
+  align-self: flex-end;   
+}
+
+.auth-btn.logout:hover {
+  background-color: #fdf0f0;
+}
+
+.auth-btn-wrap {
+  font-size: 14px;
+  display: flex;
+  justify-content: flex-end;  
+  gap: 10px;               
+}
+
+.user-info {
+  font-size: 14px;
+  background-color: #fdf0f0;
+  padding: 10px 15px 0px 15px;
+  border-radius: 10px;
+  line-height: 1.6;
+  text-align: right;
 }
