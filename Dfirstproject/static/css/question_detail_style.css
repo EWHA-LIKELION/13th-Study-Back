@@ -34,7 +34,7 @@ span {
 }
 
 hr {
-  margin: 30px 0px 30px 0px;
+  margin: 10px 0px 30px 0px;
   border: none;
   border-top: 1px solid #aaa;
 }
@@ -43,9 +43,9 @@ hr {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #ffecec;
-  padding: 0px 20px;
-  margin-top: 10px;
+  background-color: transparent;
+  padding: 0;
+  margin-top: -10px;
   border-radius: 10px;
 }
 
@@ -64,6 +64,7 @@ hr {
   margin-top: 0;
   font-size: 15px;
   color: rgb(126, 16, 16);
+  border: 1px solid rgb(126, 16, 16);
   text-decoration: none;
   border-radius: 8px;
   padding: 5px 10px;
@@ -73,8 +74,7 @@ hr {
 .back:hover,
 .delete:hover,
 .update:hover {
-  color: #005fa3;
-  text-decoration: underline;
+  background-color: rgb(255, 194, 192);
 }
 
 .meta-bar {

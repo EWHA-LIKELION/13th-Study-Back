@@ -9,4 +9,4 @@ class Questionform(forms.ModelForm):
 class Commentform(forms.ModelForm):
   class Meta:
     model=Comment
-    fields=['username', 'comment_text']
+    fields=['comment_text'] #username 필드 제거 후 로그인 정보 바로 입력되게 설정정
