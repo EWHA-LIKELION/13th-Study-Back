@@ -1,7 +1,17 @@
-
-<h1>Sign up</h1>
-<form action="{% url 'signup' %}" method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">회원가입</button>
-</form>
+{% load static %}
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'accounts/css/signup.css' %}">
+</head>
+<body>
+    <div class="signup">
+        <h1>Sign up</h1>
+        <form action="{% url 'signup' %}" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">회원가입</button>
+        </form>
+    </div>
+</body>
