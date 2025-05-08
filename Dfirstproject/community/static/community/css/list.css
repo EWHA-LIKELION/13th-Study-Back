@@ -49,3 +49,21 @@ h3{
     margin-top: 30px;
     margin-left: 25px;
 }
+
+
+/* 로그인·회원가입/로그아웃 링크 */
+.auth-links {
+    display: block;
+    text-align: right;
+    margin: 0 30px 20px; 
+}
+.auth-links a {
+    margin-left: 15px;
+    font-weight: bold;
+    color: coral;
+    text-decoration: none;
+}
+.auth-links a:hover {
+    text-decoration: underline;
+}
+

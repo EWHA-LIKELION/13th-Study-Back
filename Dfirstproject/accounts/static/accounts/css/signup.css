@@ -1,0 +1,75 @@
+body {
+    background-color: #fffbea;
+    font-family: 'Noto Sans KR', sans-serif;
+    padding: 40px;
+}
+
+.signup{
+    background-color: white;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 30px 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.signup h1 {
+    font-size: 28px;
+    text-align: center;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.signup form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.signup form p {
+    margin: 0;
+  }
+
+.signup form input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.signup form button {
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    background: #6b21a8;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.signup form button:hover {
+    background: #9333ea;
+}
+
+/* help_text 글자 색·크기 변경 */
+.signup form .helptext {
+    display: block;
+    margin-top: 0.25rem;
+    font-size: 0.875rem;
+    color: #6c757d;
+    text-align: right;
+}
+
+/* help_text 안의 ul(리스트) 스타일 */
+.signup form .helptext ul {
+    list-style: disc inside;   /* 불릿 모양, 안쪽 여백에 */
+    margin: 0;                 /* 기본 마진 리셋 */
+    padding-left: 1.2rem; 
+    color: #6c757d; 
+    text-align: right;    
+  }
+  
+  /* help_text 안의 li(아이템) 간격 */
+.signup form .helptext ul li {
+    margin-bottom: 0.25rem;
+  }
