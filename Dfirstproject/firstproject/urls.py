@@ -17,12 +17,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from community.views import *
+from accounts.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', list, name='main'),
-    path('<int:community_id>', detail, name='detail'),
+    path('', home, name='home'),
+
+    path('community', list, name='list'),
+    path('community/<int:community_id>', detail, name='detail'),
 
     path('qna', get_question_list, name='get_question_list'),
     path('qna/<int:question_id>', get_question_detail, name='get_question_detail'),
@@ -40,4 +43,8 @@ urlpatterns = [
     path('question/<int:question_id>/like', post_likequestion_createdelete, name='post_likequestion_createdelete'),
 
     path('answer/<int:answer_id>/like', post_likeanswer_createdelete, name='post_likeanswer_createdelete'),
+
+    path('signup', signup, name='signup'),
+    path('login', login, name='login'),
+    path('logout', logout, name='logout'),
 ]

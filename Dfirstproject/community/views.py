@@ -3,6 +3,9 @@ from django.utils import timezone
 from .models import User, Hashtag, Community, Question, Answer, LikeQuestion, LikeAnswer
 from .forms import QuestionForm, AnswerForm
 
+def home(request):
+    return render(request, 'home.html')
+
 # Community
 
 ## Read
