@@ -26,6 +26,7 @@ SECRET_KEY = 'django-insecure-6*cb%37spvva_&y!qle(m_e!&z^j$7!4*6u)t$y$(j#*kx$%79
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+AUTH_USER_MODEL = 'accounts.CustomUser'  # 커스텀 유저 모델 설정
 
 
 # Application definition
@@ -37,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'community.apps.CommunityConfig', # 추가한 앱 등록
+    'community',
+    'accounts',
 ]
 
 MIDDLEWARE = [

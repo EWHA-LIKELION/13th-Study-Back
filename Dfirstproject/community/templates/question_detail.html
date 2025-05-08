@@ -2,8 +2,10 @@
     <div>
         <h1> {{ question.title }} </h1>
         <br>
+        <div class="username">작성자 : {{ question.user }}</div>
         <span> {{ question.upload_time }} </span>
         <div class="content">{{question.content}}</div>
+        
     </div>
 
     <br />
@@ -13,7 +15,17 @@
         {% endfor %}
     </div>
     
-    <p>{{ num_likes }}명이 좋아합니다.</p> <a href="{% url 'add_like' question.id %}">좋아요</a>
+    <div>
+        <form action="{% url 'likes' question.id %}" method='POST'>
+          {% csrf_token %}
+          {{ question.like_users.count }}명이 좋아합니다.
+          {% if user in question.like_users.all %}
+            <input type="submit" value='좋아요 취소'>
+          {% else %}
+            <input type="submit" value='좋아요'>
+          {% endif %}
+        </form>
+      </div>
 
     <hr>
     {% for comment in question.comments.all %}
