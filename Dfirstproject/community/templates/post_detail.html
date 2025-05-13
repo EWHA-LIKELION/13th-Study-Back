@@ -11,8 +11,12 @@
                   ❤️ 좋아요 {{ post.likes_count }}
                 </button>
               </form>
+              <span style="display: block; text-align: right;">{{post.upload_time }}</span>
             <br>
-            <span>{{post.upload_time }}</span>
+            {% if post.photo %}
+            <img src="{{ post.photo.url }}" alt="" height="200px;">
+            {% endif %}
+            <br>
             <p>{{ post.content }}</p>
             <div>
                 {% for hashtag in post.hashtag.all %}

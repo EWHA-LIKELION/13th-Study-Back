@@ -14,6 +14,7 @@ class Post(models.Model):
     content=models.TextField()
     hashtag=models.ManyToManyField(Hashtag)
     likes_count=models.PositiveIntegerField(default=0)
+    photo=models.ImageField(blank=True, null=True, upload_to="post_photo")
 
     def __str__(self):
         return self.title
@@ -28,6 +29,7 @@ class Question(models.Model):
     content=models.TextField()
     hashtag=models.ManyToManyField(Hashtag)
     likes_count=models.PositiveIntegerField(default=0)
+    photo=models.ImageField(blank=True, null=True, upload_to="question_photo")
 
     def __str__(self):
         return self.title

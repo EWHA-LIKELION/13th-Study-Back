@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 from community.views import List, Qdetail, detail, post_new, post_create, question_new, question_create, post_delete, question_delete, post_update, post_update_page, question_update, question_update_page, add_commentforpost, add_commentforquestion, post_like, question_like
 import accounts.views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,4 +43,5 @@ urlpatterns = [
     path('accounts/login', accounts.views.login_view, name="login"),
     path('accounts/logout', accounts.views.logout_view, name="logout"),
     path('accounts/signup', accounts.views.singup_view, name="signup"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

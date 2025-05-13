@@ -6,12 +6,12 @@ from community.models import CommentForPost, CommentForQuestion
 class Postform(forms.ModelForm):
     class Meta:
         model=Post
-        fields=['title', 'content']
+        fields=['title', 'content', 'photo']
 
 class Questionform(forms.ModelForm):
     class Meta:
         model=Question
-        fields=['title','content']
+        fields=['title','content', 'photo']
 
 class CommentForPostform(forms.ModelForm):
     class Meta:
