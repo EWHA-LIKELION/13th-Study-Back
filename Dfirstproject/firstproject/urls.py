@@ -18,6 +18,8 @@ from django.contrib import admin
 from django.urls import path
 import community.views
 import accounts.views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -35,6 +37,6 @@ urlpatterns = [
     path('accounts/logout', accounts.views.logout_view, name='logout'),
     path('accounts/signup', accounts.views.signup_view, name="signup"),
      path('<int:question_id>/likes/', community.views.likes, name='likes'),
-]
+] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
 
 

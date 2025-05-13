@@ -1,0 +1,17 @@
+.content {
+    background-color: #ff9c2ad6;
+}
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 50px;
+}
+
+.q_list {
+    list-style-type: none;
+    padding: 10px;
+    color: black;
+    font-weight: 500;
+}
