@@ -4,7 +4,7 @@ from .models import Question, Comment, Post # post 폼도 만들긴 해야되는
 class Questionform(forms.ModelForm):
     class Meta:
         model=Question
-        fields=['title', 'content']
+        fields=['title', 'content', 'photo']
         
 class Commentform(forms.ModelForm):
     class Meta:

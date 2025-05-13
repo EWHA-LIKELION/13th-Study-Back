@@ -20,6 +20,7 @@ class Question(models.Model):
     hashtag = models.ManyToManyField('Hashtag', blank=True) # 해시태그
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='like_articles')
+    photo = models.ImageField(blank=True, null=True, upload_to = "post_photo")
     
     def __str__(self):
         return self.title

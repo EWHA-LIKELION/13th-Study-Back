@@ -4,6 +4,10 @@
         <br>
         <div class="username">작성자 : {{ question.user }}</div>
         <span> {{ question.upload_time }} </span>
+        <br>
+        {% if question.photo %}
+            <img src="{{ question.photo.url }}" alt="Question Image" style="max-width: 100%; height: auto;">
+        {% endif %}
         <div class="content">{{question.content}}</div>
         
     </div>
