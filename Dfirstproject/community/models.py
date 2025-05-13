@@ -17,7 +17,8 @@ class Post(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()
     created_at = models.DateTimeField(default=timezone.now)
-    hashtag = models.ManyToManyField(Hashtag)
+    hashtag = models.ManyToManyField(Hashtag, blank=True, null=True)
+    image = models.ImageField(upload_to='post/image', blank=True, null=True)
 
     def __str__(self):
         return self.title
