@@ -153,8 +153,8 @@ hr {
   background-color: #fff;
   border: 1.5px solid #ffd6d6;
   border-radius: 12px;
-  padding: 5px 3px;
-  margin-bottom: 20px;
+  padding: 1px 3px;
+  margin-bottom: 10px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
 }
 
@@ -168,7 +168,8 @@ hr {
 .inline-comment {
   font-size: 15px;
   color: #333;
-  margin: 0;
+  margin-top: -10px;
+  margin-bottom: -10px;
   padding: 0;
   line-height: 1.4;
   white-space: normal;
@@ -179,4 +180,34 @@ hr {
   font-weight: bold;
   color: rgb(90, 0, 0);
   margin-right: 4px;
+}
+
+.comment-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-left {
+  padding-left: 0;
+  margin-left: 0;
+}
+
+.comment-delete-form {
+  margin-bottom: 0;
+}
+
+.delete-comment-btn {
+  background-color: transparent;
+  border: 1px solid rgb(126, 16, 16);
+  color: rgb(126, 16, 16);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.delete-comment-btn:hover {
+  background-color: rgb(255, 194, 192);
+  color: white;
 }

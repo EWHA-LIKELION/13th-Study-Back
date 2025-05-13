@@ -15,7 +15,7 @@
     <h1>✍️ 새로운 글 작성하기 ✍️</h1>
 
     <form action="{% url 'create' %}" method="post" enctype="multipart/form-data">
-
+        <p><strong>작성자:</strong> {{ user.nickname }}</p>
         {% csrf_token %}
         {{form.as_p}}
         Hashtag: <input type="text" name="hashtags" placeholder=", 로 구분">

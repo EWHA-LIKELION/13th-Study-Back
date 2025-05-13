@@ -8,8 +8,14 @@
   <div>
     <h1>{{ question.title }}</h1>
     <br>
-    <span>{{question.upload_time }}</span>
+    <span class="post-meta">작성자: {{ question.username }}  |  날짜: {{question.upload_time }}</span>
     <div class="content">{{ question.content }}</div>
+
+    {% if question.photo %}
+      <div class="question-image">
+        <img src="{{ question.photo.url }}" alt="사진" height="200px">
+      </div>
+    {% endif %}
 
     
     <div class="meta-bar">
@@ -30,22 +36,40 @@
   <div class="button-bar">
     <a href="{% url 'main' %}" class="back">back</a>
     <div class="right-buttons">
-      <a href="{% url 'delete' question.id %}" class="delete">delete</a>
-      <a href="{% url 'update_page' question.id %}" class="update">update</a>
+      {% if user.nickname == question.username %}
+        <a href="{% url 'delete' question.id %}" class="delete">delete</a>
+        <a href="{% url 'update_page' question.id %}" class="update">update</a>
+      {% else %}
+        <span class="placeholder"></span>
+      {% endif %}
     </div>
   </div>
 
   <hr>
   
   <div>
-    <a href="{% url 'add_comment' question.id %}" class="add_comment">댓글달기</a>  
+    {% if user.is_authenticated %}
+      <a href="{% url 'add_comment' question.id %}" class="add_comment">댓글달기</a>  
+    {% else %}
+      <p style="font-size: 14px; color: #888;">※ 로그인 후 댓글 작성이 가능합니다.</p>
+    {% endif %}
     {% for comment in question.comments.all %}
     <div class="comment-box">
       <div class="comment-date">{{ comment.created_at }}</div>
+
       <div class="comment-top">
-        <p class="inline-comment">
-          <strong class="username">{{ comment.username }}</strong>: {{ comment.comment_text }}
-        </p>
+        <div class="comment-left">
+          <p class="inline-comment">
+            <strong class="username">{{ comment.username }}</strong>: {{ comment.comment_text }}
+          </p>
+        </div>
+      
+        {% if user.nickname == comment.username %}
+          <form method="POST" action="{% url 'delete_comment' comment.id %}" class="comment-delete-form">
+            {% csrf_token %}
+            <button type="submit" class="delete-comment-btn">X</button>
+          </form>
+        {% endif %}
       </div>
     </div>        
     {% empty %}
