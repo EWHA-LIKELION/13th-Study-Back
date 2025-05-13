@@ -16,8 +16,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from community.views import List, detail, question_detail, new, create, delete, update_page, update, add_comment, like_question
+from community.views import List, detail, question_detail, new, create, delete, update_page, update, add_comment, delete_comment, like_question
 import accounts.views
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,7 +33,8 @@ urlpatterns = [
     path('update/<int:question_id>', update, name='update2'),
     path('<int:question_id>/comment', add_comment, name='add_comment'),
     path('question/<int:question_id>/like/', like_question, name='like_question'),
+    path('comment/<int:comment_id>/delete/', delete_comment, name='delete_comment'),
     path('accounts/login', accounts.views.login_view, name="login"),
     path('accounts/logout', accounts.views.logout_view, name="logout"),
-    path('accounts/signup', accounts.views.signup_view, name="signup")
-]
+    path('accounts/signup', accounts.views.signup_view, name="signup"),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

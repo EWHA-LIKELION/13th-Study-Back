@@ -3,6 +3,7 @@ from django.utils import timezone
 from community.models import Post
 from community.models import Question, Hashtag
 from community.forms import Questionform, Commentform
+from community.models import Comment
 # Create your views here.
 
 def List(request):
@@ -28,6 +29,7 @@ def create(request):
   if form.is_valid():
     new_community=form.save(commit=False)
     new_community.upload_time=timezone.now()
+    new_community.username = request.user.nickname
     new_community.save()
     hashtags = request.POST['hashtags']
     hashtag = hashtags.split(', ')
@@ -40,15 +42,21 @@ def create(request):
 
 def delete(request, question_id):
   community_delete=get_object_or_404(Question, pk=question_id)
+  if community_delete.username != request.user.nickname:
+    return redirect('question_detail', question_id)
   community_delete.delete()
   return redirect('main')
 
 def update_page(request, question_id):
   community_update=get_object_or_404(Question, pk=question_id)
+  if community_update.username != request.user.nickname:
+    return redirect('question_detail', question_id)
   return render(request, 'update.html', {'community_update': community_update})
 
 def update(request, question_id):
   community_update=get_object_or_404(Question, pk=question_id)
+  if community_update.username != request.user.nickname:
+    return redirect('question_detail', question_id)
   community_update.title=request.POST['title']
   community_update.content=request.POST['content']
   community_update.save()
@@ -56,23 +64,30 @@ def update(request, question_id):
 
 def add_comment(request, question_id):
   community = get_object_or_404(Question, pk = question_id)
-
   if request.method == 'POST':
     form = Commentform(request.POST)
-
     if form.is_valid:
       comment = form.save(commit=False)
       comment.question = community
       comment.username = request.user.nickname
       comment.save()
       return redirect('question_detail', question_id)
-  
   else:
     form = Commentform()
   return render(request, 'add_comment.html', {'form': form})
+
+def delete_comment(request, comment_id):
+  comment = get_object_or_404(Comment, pk=comment_id)
+  if comment.username != request.user.nickname:
+    return redirect('question_detail', pk=comment.question.id)
+  question_id = comment.question.id
+  comment.delete()
+  return redirect('question_detail', pk=question_id)
 
 def like_question(request, question_id):
   question = get_object_or_404(Question, pk=question_id)
   question.like += 1
   question.save()
   return redirect('question_detail', pk=question_id)
+
+
