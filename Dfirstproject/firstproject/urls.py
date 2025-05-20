@@ -19,6 +19,8 @@ from django.urls import path
 from community.views import List, detail_post, detail_question, new, create, delete, update_page, update, new_question, create_question, delete_question, update_q_page, update_q
 from community.views import add_comment
 from accounts.views import login_view, logout_view, signup_view
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -43,4 +45,4 @@ urlpatterns = [
     path('question/delete/<int:question_id>/', delete_question, name='delete_question'),
     path('question/update_page/<int:question_id>/', update_q_page, name='update_q_page'),
     path('question/update/<int:question_id>/', update_q, name='update_q'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

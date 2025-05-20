@@ -6,6 +6,12 @@
             <span>{{post.upload_time }}</span>
             <div class="content">{{ post.content }}</div>
 
+            <br>
+            {% if post.photo %}
+            <img src="{{ post.photo.url }}" alt="" height="200px;">
+            {% endif %}
+            <br>
+
             <div>
                 {% for hashtag in post.hashtag.all %}
                     #{{ hashtag }}
