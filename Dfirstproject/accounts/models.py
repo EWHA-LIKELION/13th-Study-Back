@@ -14,6 +14,6 @@ class User(AbstractUser):
         MANAGER = 2
     
     university = models.CharField(max_length=50)
-    generation = models.PositiveSmallIntegerField()
-    part = models.PositiveSmallIntegerField(choices=Part.choices)
-    level = models.PositiveSmallIntegerField(choices=Level.choices)
+    generation = models.PositiveSmallIntegerField(blank=True, null=True)
+    part = models.PositiveSmallIntegerField(choices=Part.choices, blank=True, null=True)
+    level = models.PositiveSmallIntegerField(choices=Level.choices, blank=True, null=True)

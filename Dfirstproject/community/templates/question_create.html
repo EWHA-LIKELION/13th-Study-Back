@@ -77,7 +77,13 @@
         rows="10"
         required
       >{% block content_defaultValue %}{% endblock content_defaultValue %}</textarea>
-    </fieldset>
+	  <input
+		type="file"
+		name="image"
+		{% block image_attribute %}
+		{% endblock image_attribute %}
+	  />
+	</fieldset>
   </form>
 </main>
 {% endblock main %}
