@@ -16,7 +16,7 @@ def add_hashtag(serializer):
 
 class CommunityList(views.APIView):
     def get(self, request, format=None):
-        query_string_search = request.GET.get('search')
+        query_string_search = request.query_params.get('search')
         if query_string_search:
             communities = Community.objects.filter(
                 title__contains=query_string_search,
@@ -61,14 +61,14 @@ class CommunityDetail(views.APIView):
         
 class QuestionList(views.APIView):
     def get(self, request, format=None):
-        query_string_status = request.GET.get('status')
+        query_string_status = request.query_params.get('status')
         if query_string_status == '도와주세요':
             question_status = False
         elif query_string_status == '해결됐어요':
             question_status = True
         else:
             question_status = None
-        query_string_search = request.GET.get('search')
+        query_string_search = request.query_params.get('search')
 
         if question_status and query_string_search:
             questions = Question.objects.filter(
