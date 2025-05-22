@@ -37,3 +37,24 @@ class CommunityList(views.APIView):
             add_hashtag(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class CommunityDetail(views.APIView):
+    def get(self, request, pk, format=None):
+        community = get_object_or_404(Community, pk=pk)
+        serializer = CommunitySerializer(community)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self, request, pk, format=None):
+        community = get_object_or_404(Community, pk=pk)
+        serializer = CommunitySerializer(community, data=request.data)
+        if serializer.is_valid():
+            serializer.hashtag.clear()
+            serializer.save()
+            add_hashtag(serializer)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        community = get_object_or_404(Community, pk=pk)
+        community.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
