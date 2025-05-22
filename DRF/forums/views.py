@@ -8,3 +8,8 @@ from accounts.models import User
 from .models import Hashtag, Community, Question, Answer, LikeQuestion, LikeAnswer
 from .serializers import CommunitySerializer, QuestionSerializer, AnswerSerializer
 
+def add_hashtag(serializer):
+    hashtags = [word for word in serializer.content.split() if word.startswith('#')]
+    for hashtag in hashtags:
+        (object, created) = Hashtag.objects.get_or_create(hashtag=hashtag)
+        serializer.hashtag.add(object)
