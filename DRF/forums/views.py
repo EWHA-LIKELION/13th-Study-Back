@@ -13,3 +13,27 @@ def add_hashtag(serializer):
     for hashtag in hashtags:
         (object, created) = Hashtag.objects.get_or_create(hashtag=hashtag)
         serializer.hashtag.add(object)
+
+class CommunityList(views.APIView):
+    def get(self, request, format=None):
+        query_string_search = request.GET.get('search')
+        if query_string_search:
+            communities = Community.objects.filter(
+                title__contains=query_string_search,
+                content__contains=query_string_search,
+            )
+        else:
+            communities = Community.objects.all()
+        communities.order_by('-created_at')
+        serializer = CommunitySerializer(communities, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = CommunitySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.writer = 1 # JWT 배우기 전까지 임시로 1 할당
+            serializer.created_at = timezone.now()
+            serializer.save()
+            add_hashtag(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
