@@ -58,3 +58,46 @@ class CommunityDetail(views.APIView):
         community = get_object_or_404(Community, pk=pk)
         community.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+        
+class QuestionList(views.APIView):
+    def get(self, request, format=None):
+        query_string_status = request.GET.get('status')
+        if query_string_status == '도와주세요':
+            question_status = False
+        elif query_string_status == '해결됐어요':
+            question_status = True
+        else:
+            question_status = None
+        query_string_search = request.GET.get('search')
+
+        if question_status and query_string_search:
+            questions = Question.objects.filter(
+                status=question_status,
+                title__contains=query_string_search,
+                content__contains=query_string_search,
+            )
+        elif question_status:
+            questions = Question.objects.filter(
+                status=question_status,
+            )
+        elif query_string_search:
+            questions = Question.objects.filter(
+                title__contains=query_string_search,
+                content__contains=query_string_search,
+            )
+        else:
+            questions = Question.objects.all()
+        questions.order_by('-created_at')
+
+        serializer = QuestionSerializer(questions, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def post(self, request, format=None):
+        serializer = QuestionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.writer = 1 # JWT 배우기 전까지 임시로 1 할당
+            serializer.created_at = timezone.now()
+            serializer.save()
+            add_hashtag(serializer)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
