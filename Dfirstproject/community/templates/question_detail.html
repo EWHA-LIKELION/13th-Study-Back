@@ -23,11 +23,17 @@
         <form action="{% url 'likes' question.id %}" method='POST'>
           {% csrf_token %}
           {{ question.like_users.count }}명이 좋아합니다.
+    {% if user.is_authenticated %}
           {% if user in question.like_users.all %}
             <input type="submit" value='좋아요 취소'>
           {% else %}
             <input type="submit" value='좋아요'>
           {% endif %}
+    {% else %}
+        <a href="{% url 'login' %}">
+            <button>좋아요하려면 로그인하세요</button>
+        </a>
+     {% endif %}
         </form>
       </div>
 
