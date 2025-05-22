@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.http import Http404
+from django.db.models import Q
 from rest_framework import views
 from rest_framework import status
 from rest_framework.response import Response
@@ -17,14 +18,12 @@ def add_hashtag(serializer):
 class CommunityList(views.APIView):
     def get(self, request, format=None):
         query_string_search = request.query_params.get('search')
+
+        condition = Q()
         if query_string_search:
-            communities = Community.objects.filter(
-                title__contains=query_string_search,
-                content__contains=query_string_search,
-            )
-        else:
-            communities = Community.objects.all()
-        communities.order_by('-created_at')
+            condition &= Q(title__contains=query_string_search) | Q(content__contains=query_string_search)
+        communities = Community.objects.filter(condition).order_by('-created_at')
+
         serializer = CommunitySerializer(communities, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
@@ -61,33 +60,19 @@ class CommunityDetail(views.APIView):
         
 class QuestionList(views.APIView):
     def get(self, request, format=None):
-        query_string_status = request.query_params.get('status')
-        if query_string_status == '도와주세요':
-            question_status = False
-        elif query_string_status == '해결됐어요':
-            question_status = True
-        else:
-            question_status = None
         query_string_search = request.query_params.get('search')
+        query_string_status = request.query_params.get('status')
+        question_status = {
+            '도와주세요': False,
+            '해결됐어요': True,
+        }.get(query_string_status)
 
-        if question_status and query_string_search:
-            questions = Question.objects.filter(
-                status=question_status,
-                title__contains=query_string_search,
-                content__contains=query_string_search,
-            )
-        elif question_status:
-            questions = Question.objects.filter(
-                status=question_status,
-            )
-        elif query_string_search:
-            questions = Question.objects.filter(
-                title__contains=query_string_search,
-                content__contains=query_string_search,
-            )
-        else:
-            questions = Question.objects.all()
-        questions.order_by('-created_at')
+        condition = Q()
+        if query_string_search:
+            condition &= Q(title__contains=query_string_search) | Q(content__contains=query_string_search)
+        if question_status:
+            condition &= Q(status=question_status)
+        questions = Question.objects.filter(condition).order_by('-created_at')
 
         serializer = QuestionSerializer(questions, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
