@@ -137,3 +137,17 @@ class AnswerDetail(views.APIView):
         answer = get_object_or_404(Answer, pk=pk)
         answer.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class LikeQuestionView(views.APIView):
+    def post(self, request, pk, format=None):
+        question = get_object_or_404(Question, pk=pk)
+        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
+        (obj, created) = LikeQuestion.objects.get_or_create(
+            defaults={'created_at':timezone.now()},
+            question=question,
+            user=user,
+        )
+        if not created:
+            obj.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_201_CREATED)
