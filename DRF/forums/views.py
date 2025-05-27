@@ -138,7 +138,7 @@ class AnswerRoot(views.APIView):
         query_string_question_id = request.query_params.get('question_id')
         question = get_object_or_404(Question, pk=query_string_question_id)
         
-        serializer = QuestionSerializer(data=request.data)
+        serializer = AnswerSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(
                 created_at=timezone.now(),
