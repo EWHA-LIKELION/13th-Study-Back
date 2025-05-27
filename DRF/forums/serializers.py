@@ -5,7 +5,7 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
         fields = '__all__'
-        read_only_fields = ('id','created_at','writer','hashtag',)
+        read_only_fields = ('id','created_at','hashtag',)
         depth = 1
 
 class CommunitySerializer(PostSerializer):
@@ -15,6 +15,7 @@ class CommunitySerializer(PostSerializer):
 class QuestionSerializer(PostSerializer):
     class Meta(PostSerializer.Meta):
         model = Question
+        read_only_fields = PostSerializer.Meta.read_only_fields + ('writer',)
 
 class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
