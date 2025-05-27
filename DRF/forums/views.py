@@ -79,8 +79,8 @@ class QuestionList(views.APIView):
         user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.writer = user
             serializer.created_at = timezone.now()
+            serializer.writer = user
             serializer.save()
             add_hashtag(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -116,8 +116,8 @@ class AnswerView(views.APIView):
         
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.writer = user
             serializer.created_at = timezone.now()
+            serializer.writer = user
             serializer.question = question
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -139,12 +139,12 @@ class AnswerDetail(views.APIView):
 
 class LikeQuestionView(views.APIView):
     def post(self, request, pk, format=None):
-        question = get_object_or_404(Question, pk=pk)
         user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
+        question = get_object_or_404(Question, pk=pk)
         (obj, created) = LikeQuestion.objects.get_or_create(
             defaults={'created_at':timezone.now()},
-            question=question,
             user=user,
+            question=question,
         )
         if not created:
             obj.delete()
@@ -153,12 +153,12 @@ class LikeQuestionView(views.APIView):
 
 class LikeAnswerView(views.APIView):
     def post(self, request, pk, format=None):
-        answer = get_object_or_404(Answer, pk=pk)
         user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
+        answer = get_object_or_404(Answer, pk=pk)
         (obj, created) = LikeAnswer.objects.get_or_create(
             defaults={'created_at':timezone.now()},
-            answer=answer,
             user=user,
+            answer=answer,
         )
         if not created:
             obj.delete()
