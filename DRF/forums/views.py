@@ -16,6 +16,8 @@ def add_hashtag(instance):
 
 class CommunityRoot(views.APIView):
     def get(self, request, format=None):
+        # 커뮤니티 게시물 목록 조회
+
         query_string_search = request.query_params.get('search')
 
         condition = Q()
@@ -27,6 +29,8 @@ class CommunityRoot(views.APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
+        # 커뮤니티 게시물 추가
+
         serializer = CommunitySerializer(data=request.data)
         if serializer.is_valid():
             instance = serializer.save(
@@ -38,11 +42,15 @@ class CommunityRoot(views.APIView):
     
 class CommunityPk(views.APIView):
     def get(self, request, pk, format=None):
+        # 커뮤니티 게시물 상세 조회
+
         community = get_object_or_404(Community, pk=pk)
         serializer = CommunitySerializer(community)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, pk, format=None):
+        # 커뮤니티 게시물 수정
+
         community = get_object_or_404(Community, pk=pk)
         serializer = CommunitySerializer(community, data=request.data)
         if serializer.is_valid():
@@ -53,12 +61,16 @@ class CommunityPk(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk, format=None):
+        # 커뮤니티 게시물 삭제
+
         community = get_object_or_404(Community, pk=pk)
         community.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
         
 class QuestionRoot(views.APIView):
     def get(self, request, format=None):
+        # 질문 게시물 목록 조회
+
         query_string_search = request.query_params.get('search')
         query_string_status = request.query_params.get('status')
         question_status = {
@@ -77,6 +89,8 @@ class QuestionRoot(views.APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
+        # 질문 게시물 추가
+
         user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
@@ -90,11 +104,15 @@ class QuestionRoot(views.APIView):
     
 class QuestionPk(views.APIView):
     def get(self, request, pk, format=None):
+        # 질문 게시글 상세 조회
+
         question = get_object_or_404(Question, pk=pk)
         serializer = QuestionSerializer(question)
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def put(self, request, pk, format=None):
+        # 질문 게시글 수정
+
         question = get_object_or_404(Question, pk=pk)
         serializer = QuestionSerializer(question, data=request.data)
         if serializer.is_valid():
@@ -105,12 +123,16 @@ class QuestionPk(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk, format=None):
+        # 질문 게시글 삭제
+
         question = get_object_or_404(Question, pk=pk)
         question.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class AnswerRoot(views.APIView):
     def post(self, request, format=None):
+        # 답변 게시글 추가
+
         user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
 
         query_string_question_id = request.query_params.get('question_id')
@@ -128,6 +150,8 @@ class AnswerRoot(views.APIView):
 
 class AnswerPk(views.APIView):
     def put(self, request, pk, format=None):
+        # 답변 게시글 수정
+
         answer = get_object_or_404(Answer, pk=pk)
         serializer = AnswerSerializer(answer, data=request.data)
         if serializer.is_valid():
@@ -136,12 +160,16 @@ class AnswerPk(views.APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     def delete(self, request, pk, format=None):
+        # 답변 게시글 삭제
+
         answer = get_object_or_404(Answer, pk=pk)
         answer.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class LikeQuestionRoot(views.APIView):
     def post(self, request, pk, format=None):
+        # 질문 좋아요 추가/삭제
+
         user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         question = get_object_or_404(Question, pk=pk)
         (obj, created) = LikeQuestion.objects.get_or_create(
@@ -156,6 +184,8 @@ class LikeQuestionRoot(views.APIView):
 
 class LikeAnswerRoot(views.APIView):
     def post(self, request, pk, format=None):
+        # 답변 좋아요 추가/삭제
+
         user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         answer = get_object_or_404(Answer, pk=pk)
         (obj, created) = LikeAnswer.objects.get_or_create(
