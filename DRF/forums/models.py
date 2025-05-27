@@ -18,8 +18,6 @@ class Post(models.Model):
     content = models.TextField()
     hashtag = models.ManyToManyField(
         Hashtag,
-        null=True,
-        blank=True,
     )
     image = models.ImageField(
         upload_to='post/image',
