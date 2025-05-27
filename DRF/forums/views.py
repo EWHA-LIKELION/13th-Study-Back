@@ -22,7 +22,7 @@ class CommunityRoot(views.APIView):
 
         condition = Q()
         if query_string_search:
-            condition &= Q(title__contains=query_string_search) | Q(content__contains=query_string_search)
+            condition &= (Q(title__contains=query_string_search) | Q(content__contains=query_string_search))
         communities = Community.objects.filter(condition).order_by('-created_at')
 
         serializer = CommunitySerializer(communities, many=True)
@@ -80,7 +80,7 @@ class QuestionRoot(views.APIView):
 
         condition = Q()
         if query_string_search:
-            condition &= Q(title__contains=query_string_search) | Q(content__contains=query_string_search)
+            condition &= (Q(title__contains=query_string_search) | Q(content__contains=query_string_search))
         if question_status:
             condition &= Q(status=question_status)
         questions = Question.objects.filter(condition).order_by('-created_at')
