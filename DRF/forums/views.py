@@ -8,11 +8,11 @@ from accounts.models import User
 from .models import Hashtag, Community, Question, Answer, LikeQuestion, LikeAnswer
 from .serializers import CommunitySerializer, QuestionSerializer, AnswerSerializer
 
-def add_hashtag(serializer):
-    hashtags = [word for word in serializer.content.split() if word.startswith('#')]
+def add_hashtag(instance):
+    hashtags = [word for word in instance.content.split() if word.startswith('#')]
     for hashtag in hashtags:
         (obj, created) = Hashtag.objects.get_or_create(hashtag=hashtag)
-        serializer.hashtag.add(obj)
+        instance.hashtag.add(obj)
 
 class CommunityList(views.APIView):
     def get(self, request, format=None):
@@ -29,9 +29,10 @@ class CommunityList(views.APIView):
     def post(self, request, format=None):
         serializer = CommunitySerializer(data=request.data)
         if serializer.is_valid():
-            serializer.created_at = timezone.now()
-            serializer.save()
-            add_hashtag(serializer)
+            instance = serializer.save(
+                created_at=timezone.now(),
+            )
+            add_hashtag(instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -45,9 +46,9 @@ class CommunityDetail(views.APIView):
         community = get_object_or_404(Community, pk=pk)
         serializer = CommunitySerializer(community, data=request.data)
         if serializer.is_valid():
-            serializer.hashtag.clear()
-            serializer.save()
-            add_hashtag(serializer)
+            instance = serializer.save()
+            instance.hashtag.clear()
+            add_hashtag(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -79,10 +80,11 @@ class QuestionList(views.APIView):
         user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.created_at = timezone.now()
-            serializer.writer = user
-            serializer.save()
-            add_hashtag(serializer)
+            instance = serializer.save(
+                created_at=timezone.now(),
+                writer=user,
+            )
+            add_hashtag(instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -96,9 +98,9 @@ class QuestionDetail(views.APIView):
         question = get_object_or_404(Question, pk=pk)
         serializer = QuestionSerializer(question, data=request.data)
         if serializer.is_valid():
-            serializer.hashtag.clear()
-            serializer.save()
-            add_hashtag(serializer)
+            instance = serializer.save()
+            instance.hashtag.clear()
+            add_hashtag(instance)
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -116,10 +118,11 @@ class AnswerView(views.APIView):
         
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.created_at = timezone.now()
-            serializer.writer = user
-            serializer.question = question
-            serializer.save()
+            serializer.save(
+                created_at=timezone.now(),
+                writer=user,
+                question=question,
+            )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
