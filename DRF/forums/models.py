@@ -39,6 +39,7 @@ class Community(Post):
 class Question(Post):
     writer = models.ForeignKey(
         User,
+        related_name='questions',
         on_delete=models.CASCADE,
     )
     status = models.BooleanField()
@@ -49,6 +50,7 @@ class Answer(models.Model):
     )
     writer = models.ForeignKey(
         User,
+        related_name='answers',
         on_delete=models.CASCADE,
     )
     question = models.ForeignKey(
