@@ -12,8 +12,8 @@ from .serializers import CommunitySerializer, QuestionSerializer, AnswerSerializ
 def add_hashtag(serializer):
     hashtags = [word for word in serializer.content.split() if word.startswith('#')]
     for hashtag in hashtags:
-        (object, created) = Hashtag.objects.get_or_create(hashtag=hashtag)
-        serializer.hashtag.add(object)
+        (obj, created) = Hashtag.objects.get_or_create(hashtag=hashtag)
+        serializer.hashtag.add(obj)
 
 class CommunityList(views.APIView):
     def get(self, request, format=None):
