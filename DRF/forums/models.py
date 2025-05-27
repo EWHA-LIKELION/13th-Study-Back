@@ -9,12 +9,12 @@ class Hashtag(models.Model):
         return self.hashtag
 
 class Post(models.Model):
+    created_at = models.DateTimeField(
+        default=timezone.now,
+    )
     writer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-    )
-    created_at = models.DateTimeField(
-        default=timezone.now,
     )
     title = models.CharField(
         max_length=50,
@@ -44,12 +44,12 @@ class Question(Post):
     status = models.BooleanField()
 
 class Answer(models.Model):
+    created_at = models.DateTimeField(
+        default=timezone.now,
+    )
     writer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-    )
-    created_at = models.DateTimeField(
-        default=timezone.now,
     )
     question = models.ForeignKey(
         Question,
@@ -65,14 +65,14 @@ class LikeQuestion(models.Model):
     created_at = models.DateTimeField(
         default=timezone.now,
     )
-    question = models.ForeignKey(
-        Question,
-        related_name='likes',
-        on_delete=models.CASCADE,
-    )
     user = models.ForeignKey(
         User,
         related_name='like_question',
+        on_delete=models.CASCADE,
+    )
+    question = models.ForeignKey(
+        Question,
+        related_name='likes',
         on_delete=models.CASCADE,
     )
 
@@ -83,14 +83,14 @@ class LikeAnswer(models.Model):
     created_at = models.DateTimeField(
         default=timezone.now,
     )
-    answer = models.ForeignKey(
-        Answer,
-        related_name='likes',
-        on_delete=models.CASCADE,
-    )
     user = models.ForeignKey(
         User,
         related_name='like_answer',
+        on_delete=models.CASCADE,
+    )
+    answer = models.ForeignKey(
+        Answer,
+        related_name='likes',
         on_delete=models.CASCADE,
     )
 
