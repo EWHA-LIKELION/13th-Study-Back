@@ -12,10 +12,6 @@ class Post(models.Model):
     created_at = models.DateTimeField(
         default=timezone.now,
     )
-    writer = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-    )
     title = models.CharField(
         max_length=50,
     )
@@ -41,6 +37,10 @@ class Community(Post):
     pass
 
 class Question(Post):
+    writer = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
     status = models.BooleanField()
 
 class Answer(models.Model):
