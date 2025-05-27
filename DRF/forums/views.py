@@ -107,3 +107,19 @@ class QuestionDetail(views.APIView):
         question = get_object_or_404(Question, pk=pk)
         question.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class AnswerView(views.APIView):
+    def post(self, request, format=None):
+        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
+
+        query_string_question_id = request.query_params.get('question_id')
+        question = get_object_or_404(Question, pk=query_string_question_id)
+        
+        serializer = QuestionSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.writer = user
+            serializer.created_at = timezone.now()
+            serializer.question = question
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
