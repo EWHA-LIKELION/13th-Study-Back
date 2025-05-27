@@ -123,3 +123,17 @@ class AnswerView(views.APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class AnswerDetail(views.APIView):
+    def put(self, request, pk, format=None):
+        answer = get_object_or_404(Answer, pk=pk)
+        serializer = AnswerSerializer(answer, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, pk, format=None):
+        answer = get_object_or_404(Answer, pk=pk)
+        answer.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
