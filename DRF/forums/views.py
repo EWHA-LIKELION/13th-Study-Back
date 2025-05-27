@@ -29,13 +29,12 @@ class CommunityList(views.APIView):
     def post(self, request, format=None):
         serializer = CommunitySerializer(data=request.data)
         if serializer.is_valid():
-            serializer.writer = 1 # JWT 배우기 전까지 임시로 1 할당
             serializer.created_at = timezone.now()
             serializer.save()
             add_hashtag(serializer)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+    
 class CommunityDetail(views.APIView):
     def get(self, request, pk, format=None):
         community = get_object_or_404(Community, pk=pk)
