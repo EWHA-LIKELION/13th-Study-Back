@@ -76,9 +76,10 @@ class QuestionList(views.APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
     
     def post(self, request, format=None):
+        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.writer = 1 # JWT 배우기 전까지 임시로 1 할당
+            serializer.writer = user
             serializer.created_at = timezone.now()
             serializer.save()
             add_hashtag(serializer)
