@@ -9,7 +9,7 @@ class Hashtag(models.Model):
         return self.hashtag
 
 class Post(models.Model):
-    writer = models.OneToOneField(
+    writer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
     )
@@ -44,7 +44,7 @@ class Question(Post):
     status = models.BooleanField()
 
 class Answer(models.Model):
-    writer = models.OneToOneField(
+    writer = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
     )
