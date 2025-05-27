@@ -4,14 +4,14 @@ from .views import *
 app_name = 'forums'
 
 urlpatterns = [
-    path('community', CommunityList.as_view()),
-    path('community/<int:pk>', CommunityDetail.as_view()),
+    path('community', CommunityRoot.as_view()),
+    path('community/<int:pk>', CommunityPk.as_view()),
 
-    path('question', QuestionList.as_view()),
-    path('question/<int:pk>', QuestionDetail.as_view()),
-    path('question/<int:pk>/like', LikeQuestionView.as_view()),
+    path('question', QuestionRoot.as_view()),
+    path('question/<int:pk>', QuestionPk.as_view()),
+    path('question/<int:pk>/like', LikeQuestionRoot.as_view()),
 
-    path('answer', AnswerView.as_view()),
-    path('answer/<int:pk>', AnswerDetail.as_view()),
-    path('answer/<int:pk>/like', LikeAnswerView.as_view()),
+    path('answer', AnswerRoot.as_view()),
+    path('answer/<int:pk>', AnswerPk.as_view()),
+    path('answer/<int:pk>/like', LikeAnswerRoot.as_view()),
 ]
