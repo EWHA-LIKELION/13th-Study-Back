@@ -1,6 +1,5 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.http import Http404
 from django.db.models import Q
 from rest_framework import views
 from rest_framework import status
