@@ -1,5 +1,11 @@
 from rest_framework import serializers
+from accounts.models import User
 from .models import Post, Community, Question, Answer
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id','first_name','last_name','image',)
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
