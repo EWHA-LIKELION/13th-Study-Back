@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from django.db.models import Q
-from rest_framework import views
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.response import Response
 from accounts.models import User
 from .models import Hashtag, Community, Question, Answer, LikeQuestion, LikeAnswer
@@ -14,7 +14,7 @@ def add_hashtag(instance):
         (obj, created) = Hashtag.objects.get_or_create(hashtag=hashtag)
         instance.hashtag.add(obj)
 
-class CommunityRoot(views.APIView):
+class CommunityRoot(APIView):
     def get(self, request, format=None):
         # 커뮤니티 게시물 목록 조회
 
@@ -40,7 +40,7 @@ class CommunityRoot(views.APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class CommunityPk(views.APIView):
+class CommunityPk(APIView):
     def get(self, request, pk, format=None):
         # 커뮤니티 게시물 상세 조회
 
@@ -67,7 +67,7 @@ class CommunityPk(views.APIView):
         community.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
         
-class QuestionRoot(views.APIView):
+class QuestionRoot(APIView):
     def get(self, request, format=None):
         # 질문 게시물 목록 조회
 
@@ -102,7 +102,7 @@ class QuestionRoot(views.APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
-class QuestionPk(views.APIView):
+class QuestionPk(APIView):
     def get(self, request, pk, format=None):
         # 질문 게시글 상세 조회
 
@@ -129,7 +129,7 @@ class QuestionPk(views.APIView):
         question.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class AnswerRoot(views.APIView):
+class AnswerRoot(APIView):
     def post(self, request, format=None):
         # 답변 게시글 추가
 
@@ -148,7 +148,7 @@ class AnswerRoot(views.APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-class AnswerPk(views.APIView):
+class AnswerPk(APIView):
     def put(self, request, pk, format=None):
         # 답변 게시글 수정
 
@@ -166,7 +166,7 @@ class AnswerPk(views.APIView):
         answer.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class LikeQuestionRoot(views.APIView):
+class LikeQuestionRoot(APIView):
     def post(self, request, pk, format=None):
         # 질문 좋아요 추가/삭제
 
@@ -182,7 +182,7 @@ class LikeQuestionRoot(views.APIView):
             return Response(status=status.HTTP_204_NO_CONTENT)
         return Response(status=status.HTTP_201_CREATED)
 
-class LikeAnswerRoot(views.APIView):
+class LikeAnswerRoot(APIView):
     def post(self, request, pk, format=None):
         # 답변 좋아요 추가/삭제
 
