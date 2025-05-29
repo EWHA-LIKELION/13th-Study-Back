@@ -12,10 +12,13 @@ media
 .env
 .venv
 .newvenv
+.venv_study
 env/
+ENV/
 venv/
 newvenv/
-ENV/
+venv_study/
 env.bak/
 venv.bak/
 newvenv.bak/
+venv_study.bak/
