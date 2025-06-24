@@ -4,7 +4,6 @@ from django.db.models import Q, Count, Prefetch
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from accounts.models import User
 from .models import Hashtag, Community, Question, Answer, LikeQuestion, LikeAnswer
 from .serializers import CommunitySerializer, QuestionSerializer, AnswerSerializer
 
