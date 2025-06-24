@@ -113,20 +113,24 @@ class QuestionPk(APIView):
         # 질문 게시글 수정
 
         question = get_object_or_404(Question, pk=pk)
-        serializer = QuestionSerializer(question, data=request.data)
-        if serializer.is_valid():
-            instance = serializer.save()
-            instance.hashtag.clear()
-            add_hashtag(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        if question.writer == request.user:
+            serializer = QuestionSerializer(question, data=request.data)
+            if serializer.is_valid():
+                instance = serializer.save()
+                instance.hashtag.clear()
+                add_hashtag(instance)
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     def delete(self, request, pk, format=None):
         # 질문 게시글 삭제
 
         question = get_object_or_404(Question, pk=pk)
-        question.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if question.writer == request.user:
+            question.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 class AnswerRoot(APIView):
     def post(self, request, format=None):
@@ -150,18 +154,22 @@ class AnswerPk(APIView):
         # 답변 게시글 수정
 
         answer = get_object_or_404(Answer, pk=pk)
-        serializer = AnswerSerializer(answer, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        if answer.writer == request.user:
+            serializer = AnswerSerializer(answer, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status=status.HTTP_403_FORBIDDEN)
+
     def delete(self, request, pk, format=None):
         # 답변 게시글 삭제
 
         answer = get_object_or_404(Answer, pk=pk)
-        answer.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if answer.writer == request.user:
+            answer.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
 class LikeQuestionRoot(APIView):
     def post(self, request, pk, format=None):
