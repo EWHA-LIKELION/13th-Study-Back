@@ -42,5 +42,4 @@ class LoginSerializer(serializers.Serializer):
                     'access_token': str(token.access_token),
                     'refresh_token': str(token),
                 }
-            else:
-                raise serializers.ValidationError()
+        raise serializers.ValidationError()
