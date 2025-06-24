@@ -306,16 +306,17 @@ class LikeQuestionRoot(APIView):
             user=request.user,
             question=question,
         )
-        if not created:
+        if created:
+            return Response(
+                {"message":"이 질문을 좋아합니다."},
+                status=status.HTTP_201_CREATED,
+            )
+        else:
             obj.delete()
             return Response(
                 {"message":"이 질문을 더이상 좋아하지 않습니다."},
                 status=status.HTTP_204_NO_CONTENT,
             )
-        return Response(
-            {"message":"이 질문을 좋아합니다."},
-            status=status.HTTP_201_CREATED,
-        )
 
 class LikeAnswerRoot(APIView):
     permission_classes = [IsAuthenticated]
@@ -329,13 +330,14 @@ class LikeAnswerRoot(APIView):
             user=request.user,
             answer=answer,
         )
-        if not created:
+        if created:
+            return Response(
+                {"message":"이 답변을 좋아합니다."},
+                status=status.HTTP_201_CREATED,
+            )
+        else:
             obj.delete()
             return Response(
                 {"message":"이 답변을 더이상 좋아하지 않습니다."},
                 status=status.HTTP_204_NO_CONTENT,
             )
-        return Response(
-            {"message":"이 답변을 좋아합니다."},
-            status=status.HTTP_201_CREATED,
-        )
