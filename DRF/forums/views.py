@@ -185,6 +185,16 @@ class AnswerRoot(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
+class AnswerMy(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        # 내가 작성한 답변 게시물 목록 조회
+
+        answers = Answer.objects.filter(writer=request.user).order_by('-created_at')
+        serializer = AnswerSerializer(answers, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
 class AnswerPk(APIView):
     permission_classes = [IsAuthenticated]
 

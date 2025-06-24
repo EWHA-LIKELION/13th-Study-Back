@@ -13,6 +13,7 @@ urlpatterns = [
     path('question/<int:pk>/like', LikeQuestionRoot.as_view()),
 
     path('answer', AnswerRoot.as_view()),
+    path('answer/my', AnswerMy.as_view()),
     path('answer/<int:pk>', AnswerPk.as_view()),
     path('answer/<int:pk>/like', LikeAnswerRoot.as_view()),
 ]
