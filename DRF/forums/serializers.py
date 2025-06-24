@@ -13,7 +13,7 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = '__all__'
-        read_only_fields = ('id','created_at','writer','question',)
+        read_only_fields = ('id','created_at','question',)
 
 class PostSerializer(serializers.ModelSerializer):
     class Meta:
