@@ -4,6 +4,7 @@ from django.db.models import Q, Count, Prefetch
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import Hashtag, Community, Question, Answer, LikeQuestion, LikeAnswer
 from .serializers import CommunitySerializer, QuestionSerializer, AnswerSerializer
 
@@ -67,6 +68,12 @@ class CommunityPk(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
         
 class QuestionRoot(APIView):
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        else:
+            return [IsAuthenticated()]
+
     def get(self, request, format=None):
         # 질문 게시물 목록 조회
 
@@ -101,6 +108,8 @@ class QuestionRoot(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
 class QuestionPk(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, pk, format=None):
         # 질문 게시글 상세 조회
 
@@ -148,6 +157,8 @@ class QuestionPk(APIView):
         return Response(status=status.HTTP_403_FORBIDDEN)
 
 class AnswerRoot(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, format=None):
         # 답변 게시글 추가
 
@@ -165,6 +176,8 @@ class AnswerRoot(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AnswerPk(APIView):
+    permission_classes = [IsAuthenticated]
+
     def put(self, request, pk, format=None):
         # 답변 게시글 수정
 
@@ -187,6 +200,8 @@ class AnswerPk(APIView):
         return Response(status=status.HTTP_403_FORBIDDEN)
 
 class LikeQuestionRoot(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, pk, format=None):
         # 질문 좋아요 추가/삭제
 
@@ -202,6 +217,8 @@ class LikeQuestionRoot(APIView):
         return Response(status=status.HTTP_201_CREATED)
 
 class LikeAnswerRoot(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, pk, format=None):
         # 답변 좋아요 추가/삭제
 
