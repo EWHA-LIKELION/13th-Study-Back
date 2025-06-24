@@ -26,7 +26,10 @@ class CommunityRoot(APIView):
         communities = Community.objects.filter(condition).order_by('-created_at')
 
         serializer = CommunitySerializer(communities, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
     
     def post(self, request, format=None):
         # 커뮤니티 게시물 추가
@@ -37,8 +40,14 @@ class CommunityRoot(APIView):
                 created_at=timezone.now(),
             )
             add_hashtag(instance)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     
 class CommunityPk(APIView):
     def get(self, request, pk, format=None):
@@ -46,7 +55,10 @@ class CommunityPk(APIView):
 
         community = get_object_or_404(Community, pk=pk)
         serializer = CommunitySerializer(community)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
     
     def put(self, request, pk, format=None):
         # 커뮤니티 게시물 수정
@@ -57,15 +69,24 @@ class CommunityPk(APIView):
             instance = serializer.save()
             instance.hashtag.clear()
             add_hashtag(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message":"커뮤니티 게시물을 수정했습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     
     def delete(self, request, pk, format=None):
         # 커뮤니티 게시물 삭제
 
         community = get_object_or_404(Community, pk=pk)
         community.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message":"커뮤니티 게시물을 삭제했습니다."},
+            status=status.HTTP_204_NO_CONTENT,
+        )
         
 class QuestionRoot(APIView):
     def get_permissions(self):
@@ -92,7 +113,10 @@ class QuestionRoot(APIView):
         questions = Question.objects.filter(condition).order_by('-created_at')
 
         serializer = QuestionSerializer(questions, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
     
     def post(self, request, format=None):
         # 질문 게시물 추가
@@ -104,8 +128,14 @@ class QuestionRoot(APIView):
                 writer=request.user,
             )
             add_hashtag(instance)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     
 class QuestionMy(APIView):
     permission_classes = [IsAuthenticated]
@@ -115,7 +145,10 @@ class QuestionMy(APIView):
 
         questions = Question.objects.filter(writer=request.user).order_by('-created_at')
         serializer = QuestionSerializer(questions, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
 
 class QuestionPk(APIView):
     permission_classes = [IsAuthenticated]
@@ -141,7 +174,10 @@ class QuestionPk(APIView):
             question=question,
         ).exists()
 
-        return Response(serializer.data|{"is_liked":is_liked}, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data|{"is_liked":is_liked},
+            status=status.HTTP_200_OK,
+        )
     
     def put(self, request, pk, format=None):
         # 질문 게시글 수정
@@ -153,9 +189,18 @@ class QuestionPk(APIView):
                 instance = serializer.save()
                 instance.hashtag.clear()
                 add_hashtag(instance)
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+                return Response(
+                    {"message":"질문 게시글을 수정했습니다."},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(
+            {"message":"본인이 작성한 게시글만 수정할 수 있습니다."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
 
     def delete(self, request, pk, format=None):
         # 질문 게시글 삭제
@@ -163,8 +208,14 @@ class QuestionPk(APIView):
         question = get_object_or_404(Question, pk=pk)
         if question.writer == request.user:
             question.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {"message":"질문 게시글을 삭제했습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            {"message":"본인이 작성한 게시글만 삭제할 수 있습니다."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
 
 class AnswerRoot(APIView):
     permission_classes = [IsAuthenticated]
@@ -182,8 +233,14 @@ class AnswerRoot(APIView):
                 writer=request.user,
                 question=question,
             )
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 class AnswerMy(APIView):
     permission_classes = [IsAuthenticated]
@@ -193,7 +250,10 @@ class AnswerMy(APIView):
 
         answers = Answer.objects.filter(writer=request.user).order_by('-created_at')
         serializer = AnswerSerializer(answers, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
 
 class AnswerPk(APIView):
     permission_classes = [IsAuthenticated]
@@ -206,9 +266,18 @@ class AnswerPk(APIView):
             serializer = AnswerSerializer(answer, data=request.data)
             if serializer.is_valid():
                 serializer.save()
-                return Response(status=status.HTTP_204_NO_CONTENT)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+                return Response(
+                    {"message":"답변 게시글을 수정했습니다."},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(
+            {"message":"본인이 작성한 게시글만 수정할 수 있습니다."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
 
     def delete(self, request, pk, format=None):
         # 답변 게시글 삭제
@@ -216,8 +285,14 @@ class AnswerPk(APIView):
         answer = get_object_or_404(Answer, pk=pk)
         if answer.writer == request.user:
             answer.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_403_FORBIDDEN)
+            return Response(
+                {"message":"답변 게시글을 삭제했습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            {"message":"본인이 작성한 게시글만 삭제할 수 있습니다."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
 
 class LikeQuestionRoot(APIView):
     permission_classes = [IsAuthenticated]
@@ -233,8 +308,14 @@ class LikeQuestionRoot(APIView):
         )
         if not created:
             obj.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_201_CREATED)
+            return Response(
+                {"message":"이 질문을 더이상 좋아하지 않습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            {"message":"이 질문을 좋아합니다."},
+            status=status.HTTP_201_CREATED,
+        )
 
 class LikeAnswerRoot(APIView):
     permission_classes = [IsAuthenticated]
@@ -250,5 +331,11 @@ class LikeAnswerRoot(APIView):
         )
         if not created:
             obj.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_201_CREATED)
+            return Response(
+                {"message":"이 답변을 더이상 좋아하지 않습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            {"message":"이 답변을 좋아합니다."},
+            status=status.HTTP_201_CREATED,
+        )
