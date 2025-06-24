@@ -8,6 +8,7 @@ urlpatterns = [
     path('community/<int:pk>', CommunityPk.as_view()),
 
     path('question', QuestionRoot.as_view()),
+    path('question/my', QuestionMy.as_view()),
     path('question/<int:pk>', QuestionPk.as_view()),
     path('question/<int:pk>/like', LikeQuestionRoot.as_view()),
 
