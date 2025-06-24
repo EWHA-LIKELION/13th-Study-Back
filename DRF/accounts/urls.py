@@ -5,5 +5,5 @@ app_name = 'accounts'
 
 urlpatterns = [
     path('login', Login.as_view()),
-    path('user', UserRoot.as_view()),
+    path('user', User.as_view()),
 ]
