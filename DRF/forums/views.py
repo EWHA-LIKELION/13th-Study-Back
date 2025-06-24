@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.db.models import Q
+from django.db.models import Q, Count, Prefetch
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -105,9 +105,25 @@ class QuestionPk(APIView):
     def get(self, request, pk, format=None):
         # 질문 게시글 상세 조회
 
-        question = get_object_or_404(Question, pk=pk)
+        question = get_object_or_404(
+            Question.objects.annotate(
+                likes_count=Count('likes', distinct=True)
+            ).prefetch_related(
+                Prefetch(
+                    'answers',
+                    queryset=Answer.objects.annotate(likes_count=Count('likes'))
+                )
+            ),
+            pk=pk
+        )
         serializer = QuestionSerializer(question)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        is_liked = LikeQuestion.objects.filter(
+            user=request.user,
+            question=question,
+        ).exists()
+
+        return Response(serializer.data|{"is_liked":is_liked}, status=status.HTTP_200_OK)
     
     def put(self, request, pk, format=None):
         # 질문 게시글 수정

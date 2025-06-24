@@ -9,6 +9,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 class AnswerSerializer(serializers.ModelSerializer):
     writer = UserSerializer(read_only=True)
+    likes_count = serializers.IntegerField(read_only=True)
 
     class Meta:
         model = Answer
@@ -28,6 +29,7 @@ class CommunitySerializer(PostSerializer):
 class QuestionSerializer(PostSerializer):
     writer = UserSerializer(read_only=True)
     answers = AnswerSerializer(many=True, read_only=True)
+    likes_count = serializers.IntegerField(read_only=True)
 
     class Meta(PostSerializer.Meta):
         model = Question
