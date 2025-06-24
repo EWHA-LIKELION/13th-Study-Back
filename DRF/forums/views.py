@@ -91,12 +91,11 @@ class QuestionRoot(APIView):
     def post(self, request, format=None):
         # 질문 게시물 추가
 
-        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
             instance = serializer.save(
                 created_at=timezone.now(),
-                writer=user,
+                writer=request.user,
             )
             add_hashtag(instance)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -133,8 +132,6 @@ class AnswerRoot(APIView):
     def post(self, request, format=None):
         # 답변 게시글 추가
 
-        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
-
         query_string_question_id = request.query_params.get('question_id')
         question = get_object_or_404(Question, pk=query_string_question_id)
         
@@ -142,7 +139,7 @@ class AnswerRoot(APIView):
         if serializer.is_valid():
             serializer.save(
                 created_at=timezone.now(),
-                writer=user,
+                writer=request.user,
                 question=question,
             )
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -170,11 +167,10 @@ class LikeQuestionRoot(APIView):
     def post(self, request, pk, format=None):
         # 질문 좋아요 추가/삭제
 
-        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         question = get_object_or_404(Question, pk=pk)
         (obj, created) = LikeQuestion.objects.get_or_create(
             defaults={'created_at':timezone.now()},
-            user=user,
+            user=request.user,
             question=question,
         )
         if not created:
@@ -186,11 +182,10 @@ class LikeAnswerRoot(APIView):
     def post(self, request, pk, format=None):
         # 답변 좋아요 추가/삭제
 
-        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         answer = get_object_or_404(Answer, pk=pk)
         (obj, created) = LikeAnswer.objects.get_or_create(
             defaults={'created_at':timezone.now()},
-            user=user,
+            user=request.user,
             answer=answer,
         )
         if not created:
