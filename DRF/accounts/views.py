@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .serializers import UserSerializer, LoginSerializer
 
 class Login(APIView):
-    def post(self, request):
+    def post(self, request, format=None):
         serializer = LoginSerializer(data=request.data)
 
         if serializer.is_valid():
@@ -12,7 +12,7 @@ class Login(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class UserRoot(APIView):
-    def post(self, request):
+    def post(self, request, format=None):
         serializer = UserSerializer(data=request.data)
 
         if serializer.is_valid():
