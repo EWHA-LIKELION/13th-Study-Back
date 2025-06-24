@@ -79,6 +79,14 @@ class LikeQuestion(models.Model):
     def __str__(self):
         return f'{self.user.first_name} 님이 "{self.question.title}" 질문을 좋아합니다.'
     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user','question'],
+                name='사용자는 질문에 좋아요를 한 번만 누를 수 있습니다.',
+            )
+        ]
+
 class LikeAnswer(models.Model):
     created_at = models.DateTimeField(
         default=timezone.now,
@@ -96,3 +104,11 @@ class LikeAnswer(models.Model):
 
     def __str__(self):
         return f'{self.user.first_name} 님이 "{self.answer.content}" 답변을 좋아합니다.'
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user','answer'],
+                name='사용자는 답변에 좋아요를 한 번만 누를 수 있습니다.',
+            )
+        ]
