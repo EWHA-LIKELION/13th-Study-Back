@@ -1,10 +1,10 @@
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
-from django.db.models import Q
-from rest_framework import views
+from django.db.models import Q, Count, Prefetch
 from rest_framework import status
+from rest_framework.views import APIView
 from rest_framework.response import Response
-from accounts.models import User
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from .models import Hashtag, Community, Question, Answer, LikeQuestion, LikeAnswer
 from .serializers import CommunitySerializer, QuestionSerializer, AnswerSerializer
 
@@ -14,7 +14,7 @@ def add_hashtag(instance):
         (obj, created) = Hashtag.objects.get_or_create(hashtag=hashtag)
         instance.hashtag.add(obj)
 
-class CommunityRoot(views.APIView):
+class CommunityRoot(APIView):
     def get(self, request, format=None):
         # 커뮤니티 게시물 목록 조회
 
@@ -26,7 +26,10 @@ class CommunityRoot(views.APIView):
         communities = Community.objects.filter(condition).order_by('-created_at')
 
         serializer = CommunitySerializer(communities, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
     
     def post(self, request, format=None):
         # 커뮤니티 게시물 추가
@@ -37,16 +40,25 @@ class CommunityRoot(views.APIView):
                 created_at=timezone.now(),
             )
             add_hashtag(instance)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     
-class CommunityPk(views.APIView):
+class CommunityPk(APIView):
     def get(self, request, pk, format=None):
         # 커뮤니티 게시물 상세 조회
 
         community = get_object_or_404(Community, pk=pk)
         serializer = CommunitySerializer(community)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
     
     def put(self, request, pk, format=None):
         # 커뮤니티 게시물 수정
@@ -57,17 +69,32 @@ class CommunityPk(views.APIView):
             instance = serializer.save()
             instance.hashtag.clear()
             add_hashtag(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"message":"커뮤니티 게시물을 수정했습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     
     def delete(self, request, pk, format=None):
         # 커뮤니티 게시물 삭제
 
         community = get_object_or_404(Community, pk=pk)
         community.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message":"커뮤니티 게시물을 삭제했습니다."},
+            status=status.HTTP_204_NO_CONTENT,
+        )
         
-class QuestionRoot(views.APIView):
+class QuestionRoot(APIView):
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            return [AllowAny()]
+        else:
+            return [IsAuthenticated()]
+
     def get(self, request, format=None):
         # 질문 게시물 목록 조회
 
@@ -86,54 +113,115 @@ class QuestionRoot(views.APIView):
         questions = Question.objects.filter(condition).order_by('-created_at')
 
         serializer = QuestionSerializer(questions, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
     
     def post(self, request, format=None):
         # 질문 게시물 추가
 
-        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         serializer = QuestionSerializer(data=request.data)
         if serializer.is_valid():
             instance = serializer.save(
                 created_at=timezone.now(),
-                writer=user,
+                writer=request.user,
             )
             add_hashtag(instance)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
     
-class QuestionPk(views.APIView):
+class QuestionMy(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        # 내가 작성한 질문 게시물 목록 조회
+
+        questions = Question.objects.filter(writer=request.user).order_by('-created_at')
+        serializer = QuestionSerializer(questions, many=True)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+
+class QuestionPk(APIView):
+    permission_classes = [IsAuthenticated]
+
     def get(self, request, pk, format=None):
         # 질문 게시글 상세 조회
 
-        question = get_object_or_404(Question, pk=pk)
+        question = get_object_or_404(
+            Question.objects.annotate(
+                likes_count=Count('likes', distinct=True)
+            ).prefetch_related(
+                Prefetch(
+                    'answers',
+                    queryset=Answer.objects.annotate(likes_count=Count('likes'))
+                )
+            ),
+            pk=pk
+        )
         serializer = QuestionSerializer(question)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+
+        is_liked = LikeQuestion.objects.filter(
+            user=request.user,
+            question=question,
+        ).exists()
+
+        return Response(
+            serializer.data|{"is_liked":is_liked},
+            status=status.HTTP_200_OK,
+        )
     
     def put(self, request, pk, format=None):
         # 질문 게시글 수정
 
         question = get_object_or_404(Question, pk=pk)
-        serializer = QuestionSerializer(question, data=request.data)
-        if serializer.is_valid():
-            instance = serializer.save()
-            instance.hashtag.clear()
-            add_hashtag(instance)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        if question.writer == request.user:
+            serializer = QuestionSerializer(question, data=request.data)
+            if serializer.is_valid():
+                instance = serializer.save()
+                instance.hashtag.clear()
+                add_hashtag(instance)
+                return Response(
+                    {"message":"질문 게시글을 수정했습니다."},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(
+            {"message":"본인이 작성한 게시글만 수정할 수 있습니다."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
     def delete(self, request, pk, format=None):
         # 질문 게시글 삭제
 
         question = get_object_or_404(Question, pk=pk)
-        question.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if question.writer == request.user:
+            question.delete()
+            return Response(
+                {"message":"질문 게시글을 삭제했습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            {"message":"본인이 작성한 게시글만 삭제할 수 있습니다."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
 
-class AnswerRoot(views.APIView):
+class AnswerRoot(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, format=None):
         # 답변 게시글 추가
-
-        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
 
         query_string_question_id = request.query_params.get('question_id')
         question = get_object_or_404(Question, pk=query_string_question_id)
@@ -142,58 +230,114 @@ class AnswerRoot(views.APIView):
         if serializer.is_valid():
             serializer.save(
                 created_at=timezone.now(),
-                writer=user,
+                writer=request.user,
                 question=question,
             )
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                serializer.data,
+                status=status.HTTP_201_CREATED,
+            )
+        return Response(
+            serializer.errors,
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
-class AnswerPk(views.APIView):
+class AnswerMy(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        # 내가 작성한 답변 게시물 목록 조회
+
+        answers = Answer.objects.filter(writer=request.user).order_by('-created_at')
+        serializer = AnswerSerializer(answers, many=True)
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )
+
+class AnswerPk(APIView):
+    permission_classes = [IsAuthenticated]
+
     def put(self, request, pk, format=None):
         # 답변 게시글 수정
 
         answer = get_object_or_404(Answer, pk=pk)
-        serializer = AnswerSerializer(answer, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+        if answer.writer == request.user:
+            serializer = AnswerSerializer(answer, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(
+                    {"message":"답변 게시글을 수정했습니다."},
+                    status=status.HTTP_204_NO_CONTENT,
+                )
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        return Response(
+            {"message":"본인이 작성한 게시글만 수정할 수 있습니다."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
+
     def delete(self, request, pk, format=None):
         # 답변 게시글 삭제
 
         answer = get_object_or_404(Answer, pk=pk)
-        answer.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        if answer.writer == request.user:
+            answer.delete()
+            return Response(
+                {"message":"답변 게시글을 삭제했습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
+        return Response(
+            {"message":"본인이 작성한 게시글만 삭제할 수 있습니다."},
+            status=status.HTTP_403_FORBIDDEN,
+        )
 
-class LikeQuestionRoot(views.APIView):
+class LikeQuestionRoot(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, pk, format=None):
         # 질문 좋아요 추가/삭제
 
-        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         question = get_object_or_404(Question, pk=pk)
         (obj, created) = LikeQuestion.objects.get_or_create(
             defaults={'created_at':timezone.now()},
-            user=user,
+            user=request.user,
             question=question,
         )
-        if not created:
+        if created:
+            return Response(
+                {"message":"이 질문을 좋아합니다."},
+                status=status.HTTP_201_CREATED,
+            )
+        else:
             obj.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_201_CREATED)
+            return Response(
+                {"message":"이 질문을 더이상 좋아하지 않습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
 
-class LikeAnswerRoot(views.APIView):
+class LikeAnswerRoot(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, request, pk, format=None):
         # 답변 좋아요 추가/삭제
 
-        user = get_object_or_404(User, pk=1) # JWT 배우기 전까지 임시로 1 할당
         answer = get_object_or_404(Answer, pk=pk)
         (obj, created) = LikeAnswer.objects.get_or_create(
             defaults={'created_at':timezone.now()},
-            user=user,
+            user=request.user,
             answer=answer,
         )
-        if not created:
+        if created:
+            return Response(
+                {"message":"이 답변을 좋아합니다."},
+                status=status.HTTP_201_CREATED,
+            )
+        else:
             obj.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response(status=status.HTTP_201_CREATED)
+            return Response(
+                {"message":"이 답변을 더이상 좋아하지 않습니다."},
+                status=status.HTTP_204_NO_CONTENT,
+            )
