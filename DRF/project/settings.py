@@ -173,16 +173,16 @@ CORS_ORIGIN_WHITELIST = (
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOW_METHODS = {
+CORS_ALLOW_METHODS = (
     'GET',
     'POST',
     'PUT',
     'PATCH',
     'DELETE',
     'OPTIONS',
-}
+)
 
-CORS_ALLOW_HEADERS = {
+CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
     'authorization',
@@ -192,4 +192,4 @@ CORS_ALLOW_HEADERS = {
     'user-agent',
     'x-csrftoken',
     'x-requested-with',
-}
+]
