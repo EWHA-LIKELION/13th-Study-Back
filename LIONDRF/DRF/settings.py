@@ -10,12 +10,22 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
+<<<<<<< main
+from datetime import timedelta
 from pathlib import Path
+import os
+
+=======
+from pathlib import Path
+>>>>>>> 2ewyeonwoo3
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+<<<<<<< main
+=======
 
+>>>>>>> 2ewyeonwoo3
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -27,6 +37,11 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+<<<<<<< main
+AUTH_USER_MODEL = 'api.User'
+
+=======
+>>>>>>> 2ewyeonwoo3
 
 # Application definition
 
@@ -38,7 +53,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+<<<<<<< main
+    'api',
+    'rest_framework_simplejwt',
+    'blog',
+=======
     'blog'
+>>>>>>> 2ewyeonwoo3
 ]
 
 MIDDLEWARE = [
@@ -123,3 +144,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+<<<<<<< main
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+}
+REST_USE_JWT = True
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=10),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+    'ROTATE_REFRESH_TOKENS': True,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'TOKEN_USER_CLASS': 'api.User',
+}
+=======
+>>>>>>> 2ewyeonwoo3
