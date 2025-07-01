@@ -8,4 +8,5 @@ urlpatterns=[
     path('<int:pk>/', PostDetail.as_view()),
     path('create/', PostList.as_view()),
     path('lang/', PostListLang.as_view()),  
+    path('comments/', Comment.as_view())
 ]

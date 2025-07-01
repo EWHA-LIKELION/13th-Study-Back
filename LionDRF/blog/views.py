@@ -6,10 +6,13 @@ from django.http import Http404
 from .models import *
 from .serializers import *
 from django.shortcuts import get_object_or_404
+from rest_framework.permissions import IsAuthenticated
 
 
 # Create your views here.
 class PostList(views.APIView):
+
+    permission_classes=[IsAuthenticated]
     def get(self, request, format=None):
         post=Post.objects.all()
         serializer=PostSerializer(post, many=True)
@@ -58,3 +61,12 @@ class PostListLang(views.APIView):
             post=Post.objects.all()
         serializer=PostSerializer(post, many=True)
         return Response(serializer.data)
+     
+
+class Comment(views.APIView):
+    def post(self, request, format=None):
+        serializer=CommentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
