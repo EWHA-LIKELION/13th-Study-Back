@@ -19,18 +19,41 @@ class Post(models.Model):
     date=models.DateTimeField('date published')
     body=models.TextField()
     language=models.IntegerField(choices=LANGUAGE_CHOICES)
-    likes=models.IntegerField()
+
 
 
     def __str__(self):
         return self.title
     
 class Comment(models.Model):
+    #작성자 필드 추가 (User 외래키)
+    user=models.ForeignKey(User, related_name='comments',on_delete=models.CASCADE, null=True)
     post=models.ForeignKey(Post, related_name='comments', on_delete=models.CASCADE)
-    username=models.CharField(max_length=20)
+    # username=models.CharField(max_length=20)
     comment_text=models.TextField()
     created_at=models.DateTimeField(default=timezone.now)
+    
 
 
     def __str__(self):
         return self.comment_text
+
+
+#Post 좋아요 필드 추가 (user랑 n:m)
+class LikePost(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    post=models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together=('user', 'post')
+        
+
+#Comment 좋아요 필드 추가 (user랑 n:m)
+class LikeComment(models.Model):
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    comment=models.ForeignKey(Comment, related_name='comment_likes',on_delete=models.CASCADE)
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together=('user', 'comment')
